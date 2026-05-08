@@ -1,12 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DatabaseMasteryTransportMongoDb.Services.SliderServices;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DatabaseMasteryTransportMongoDb.ViewComponents.DefaultViewComponents
 {
 	public class DefaultSliderViewComponent : ViewComponent
 	{
-		public IViewComponentResult Invoke()
+		private readonly ISliderService _sliderService;
+
+		public DefaultSliderViewComponent(ISliderService sliderService)
 		{
-			return View();
+			_sliderService = sliderService;
+		}
+
+		public async Task<IViewComponentResult> InvokeAsync()
+		{
+			var values = await _sliderService.GetAllSliderAsync();
+			return View(values);
 		}
 	}
 }

@@ -15,11 +15,26 @@
 
 		@await Component.InvokeAsync("AdminLayoutSidebar")
 
-		@RenderBody()
+        <div class="content-page">
+            <div class="content">
 
+                <div class="container-fluid">
+
+                    <div class="py-4">
+                        @RenderBody()
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 	</div>
 
 	@await Component.InvokeAsync("AdminLayoutScript")
+
+	@await RenderSectionAsync("Scripts", required: false)
 
 </body>
 </html>
