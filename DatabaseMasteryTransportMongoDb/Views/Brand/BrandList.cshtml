@@ -1,0 +1,305 @@
+﻿@model List<ResultBrandDto>
+@{
+    ViewData["Title"] = "Marka Listesi";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+    .brands-page {
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+    }
+
+    .page-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: #1a1a18;
+        margin-bottom: 4px;
+    }
+
+    .page-subtitle {
+        font-size: 13px;
+        color: #888780;
+        margin: 0;
+    }
+
+    .btn-add-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #1a1a18;
+        color: #f4f3ef;
+        border: none;
+        border-radius: 100px;
+        padding: 10px 20px;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background 0.18s ease, transform 0.18s ease;
+    }
+
+        .btn-add-brand:hover {
+            background: #333330;
+            color: #f4f3ef;
+            transform: translateY(-1px);
+        }
+
+    .brand-card {
+        background: #ffffff;
+        border-radius: 14px;
+        border: 1px solid #e8e6e0;
+        overflow: hidden;
+        transition: transform 0.22s ease, box-shadow 0.22s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .brand-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.09);
+            border-color: #d3d1c7;
+        }
+
+    .brand-logo-wrap {
+        height: 110px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f7f3;
+        padding: 20px;
+    }
+
+        .brand-logo-wrap img {
+            max-height: 70px;
+            object-fit: contain;
+        }
+
+    .brand-body {
+        padding: 14px 16px 10px;
+        border-top: 1px solid #f0ede6;
+        flex: 1;
+    }
+
+    .brand-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a18;
+        margin-bottom: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11.5px;
+        font-weight: 500;
+        padding: 4px 10px;
+        border-radius: 100px;
+        letter-spacing: 0.01em;
+    }
+
+        .status-pill.active {
+            background: #eaf3de;
+            color: #3b6d11;
+        }
+
+        .status-pill.inactive {
+            background: #fcebeb;
+            color: #a32d2d;
+        }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .status-pill.active .status-dot {
+        background: #639922;
+    }
+
+    .status-pill.inactive .status-dot {
+        background: #e24b4a;
+    }
+
+    .brand-footer {
+        display: flex;
+        gap: 6px;
+        padding: 10px 16px 14px;
+    }
+
+    .btn-brand {
+        flex: 1;
+        padding: 7px 0;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1px solid;
+        text-align: center;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        transition: background 0.15s ease;
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-brand-edit {
+        background: transparent;
+        border-color: #d3d1c7;
+        color: #444441;
+    }
+
+        .btn-brand-edit:hover {
+            background: #f4f3ef;
+            color: #1a1a18;
+        }
+
+    .btn-brand-del {
+        background: transparent;
+        border-color: #f7c1c1;
+        color: #a32d2d;
+    }
+
+        .btn-brand-del:hover {
+            background: #fcebeb;
+            color: #791f1f;
+        }
+
+    .empty-state {
+        padding: 5rem 2rem;
+        text-align: center;
+    }
+
+    .empty-icon-wrap {
+        width: 72px;
+        height: 72px;
+        background: #f4f3ef;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.25rem;
+    }
+
+    .empty-state h4 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1a1a18;
+        margin-bottom: 6px;
+    }
+
+    .empty-state p {
+        font-size: 13px;
+        color: #888780;
+        margin: 0;
+    }
+</style>
+
+<div class="brands-page container-fluid">
+    <div class="page-header">
+        <div>
+            <h3 class="page-title">Anlaşmalı Markalar</h3>
+            <p class="page-subtitle">Referans ağımızdaki @Model.Count aktif/pasif iş ortağını yönetin.</p>
+        </div>
+        <a href="/Brand/CreateBrand" class="btn-add-brand">
+            <i class="mdi mdi-plus-circle"></i> Yeni Marka Ekle
+        </a>
+    </div>
+
+    <div class="row g-3">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="brand-card">
+                        <div class="brand-logo-wrap">
+                            <img src="@item.ImageUrl"
+                                 alt="@item.BrandName"
+                                 onerror="this.src='/images/no-logo.png'" />
+                        </div>
+
+                        <div class="brand-body">
+                            <div class="brand-name" title="@item.BrandName">@item.BrandName</div>
+
+                            @if (item.IsStatus)
+                            {
+                                <span class="status-pill active">
+                                    <span class="status-dot"></span> Aktif
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="status-pill inactive">
+                                    <span class="status-dot"></span> Pasif
+                                </span>
+                            }
+                        </div>
+
+                        <div class="brand-footer">
+                            <a href="/Brand/UpdateBrand/@item.BrandId" class="btn-brand btn-brand-edit">
+                                <i class="mdi mdi-pencil"></i> Düzenle
+                            </a>
+                            <button type="button"
+                                    onclick="deleteBrand('@item.BrandId')"
+                                    class="btn-brand btn-brand-del">
+                                <i class="mdi mdi-delete-outline"></i> Sil
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="empty-state">
+                    <div class="empty-icon-wrap">
+                        <i class="mdi mdi-tag-off-outline fs-3 text-muted"></i>
+                    </div>
+                    <h4>Henüz Hiç Marka Eklenmemiş</h4>
+                    <p>İş ortaklarınızı ekleyerek referans listenizi oluşturmaya başlayabilirsiniz.</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function deleteBrand(id) {
+            Swal.fire({
+                title: 'Markayı Sil?',
+                text: "Bu markayı silmek referans listenizi güncelleyecektir.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#a32d2d',
+                cancelButtonColor: '#888780',
+                confirmButtonText: 'Evet, Sil!',
+                cancelButtonText: 'Vazgeç',
+                borderRadius: '14px'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/Brand/DeleteBrand/" + id;
+                }
+            });
+        }
+    </script>
+}

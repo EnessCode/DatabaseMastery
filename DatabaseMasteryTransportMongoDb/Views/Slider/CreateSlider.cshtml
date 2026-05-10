@@ -4,58 +4,285 @@
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
-<div class="row">
-    <div class="col-lg-11 mx-auto">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-white py-3 border-bottom">
-                <h5 class="m-0 font-weight-bold text-primary">Yeni Slider İçeriği Ekle</h5>
-                <p class="text-muted small mb-0">Ana sayfadaki slider alanında görünecek bilgileri buradan yönetebilirsiniz.</p>
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+    .create-slider-page {
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .form-card {
+        background: #ffffff;
+        border-radius: 14px;
+        border: 1px solid #e8e6e0;
+        overflow: hidden;
+        max-width: 860px;
+        margin: 0 auto;
+    }
+
+    .form-card-header {
+        padding: 20px 26px 18px;
+        border-bottom: 1px solid #f0ede6;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .form-header-icon {
+        width: 42px;
+        height: 42px;
+        background: #f4f3ef;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .form-header-icon i {
+            font-size: 20px;
+            color: #444441;
+        }
+
+    .form-header-text h5 {
+        font-size: 15px;
+        font-weight: 600;
+        color: #1a1a18;
+        margin-bottom: 3px;
+    }
+
+    .form-header-text p {
+        font-size: 12.5px;
+        color: #888780;
+        margin: 0;
+    }
+
+    .form-card-body {
+        padding: 26px;
+    }
+
+    .form-field-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 500;
+        color: #444441;
+        margin-bottom: 7px;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+    }
+
+    .form-field-input {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 9px;
+        border: 1px solid #d3d1c7;
+        font-size: 13.5px;
+        color: #1a1a18;
+        background: #ffffff;
+        font-family: 'DM Sans', sans-serif;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        outline: none;
+    }
+
+        .form-field-input:focus {
+            border-color: #888780;
+            box-shadow: 0 0 0 3px rgba(136, 135, 128, 0.08);
+        }
+
+        .form-field-input::placeholder {
+            color: #b4b2a9;
+        }
+
+    .form-field-textarea {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 9px;
+        border: 1px solid #d3d1c7;
+        font-size: 13.5px;
+        color: #1a1a18;
+        background: #ffffff;
+        font-family: 'DM Sans', sans-serif;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        outline: none;
+        resize: vertical;
+        min-height: 110px;
+        line-height: 1.6;
+    }
+
+        .form-field-textarea:focus {
+            border-color: #888780;
+            box-shadow: 0 0 0 3px rgba(136, 135, 128, 0.08);
+        }
+
+        .form-field-textarea::placeholder {
+            color: #b4b2a9;
+        }
+
+    .input-icon-wrap {
+        position: relative;
+    }
+
+        .input-icon-wrap .input-prefix-icon {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #888780;
+            pointer-events: none;
+        }
+
+        .input-icon-wrap .form-field-input {
+            padding-left: 38px;
+        }
+
+    .image-preview-box {
+        margin-top: 14px;
+        background: #f8f7f3;
+        border-radius: 10px;
+        border: 1px dashed #d3d1c7;
+        overflow: hidden;
+        display: none;
+    }
+
+        .image-preview-box img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+    .image-preview-label {
+        padding: 8px 14px;
+        font-size: 11.5px;
+        color: #888780;
+        border-top: 1px solid #f0ede6;
+        background: #fff;
+    }
+
+    .form-divider {
+        border: none;
+        border-top: 1px solid #f0ede6;
+        margin: 24px 0;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .btn-form-cancel {
+        padding: 10px 22px;
+        border-radius: 9px;
+        border: 1px solid #d3d1c7;
+        background: transparent;
+        color: #444441;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        transition: background 0.15s ease;
+    }
+
+        .btn-form-cancel:hover {
+            background: #f4f3ef;
+            color: #1a1a18;
+        }
+
+    .btn-form-save {
+        padding: 10px 26px;
+        border-radius: 9px;
+        border: none;
+        background: #1a1a18;
+        color: #f4f3ef;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: 'DM Sans', sans-serif;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+        .btn-form-save:hover {
+            background: #333330;
+            transform: translateY(-1px);
+        }
+</style>
+
+<div class="create-slider-page">
+    <div class="form-card">
+        <div class="form-card-header">
+            <div class="form-header-icon">
+                <i class="mdi mdi-view-carousel-outline"></i>
             </div>
+            <div class="form-header-text">
+                <h5>Yeni Slider İçeriği Ekle</h5>
+                <p>Ana sayfadaki slider alanında görünecek bilgileri buradan yönetebilirsiniz.</p>
+            </div>
+        </div>
 
-            <div class="card-body p-4">
-                <form method="post">
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <label class="form-label fw-bold text-dark">Slider Başlığı</label>
-                            <input type="text" asp-for="Title" class="form-control form-control-lg fs-15 border-secondary-subtle" placeholder="Örn: Hızlı ve Güvenilir Lojistik" required>
+        <div class="form-card-body">
+            <form method="post">
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <label class="form-field-label">Slider Başlığı</label>
+                        <input type="text"
+                               asp-for="Title"
+                               class="form-field-input"
+                               placeholder="Örn: Hızlı ve Güvenilir Lojistik"
+                               required />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-field-label">Alt Başlık</label>
+                        <input type="text"
+                               asp-for="SubTitle"
+                               class="form-field-input"
+                               placeholder="Örn: 7/24 Kesintisiz Hizmet"
+                               required />
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-field-label">Görsel URL</label>
+                        <div class="input-icon-wrap">
+                            <i class="mdi mdi-link-variant input-prefix-icon"></i>
+                            <input type="text"
+                                   asp-for="ImageUrl"
+                                   id="imageUrlInput"
+                                   class="form-field-input"
+                                   placeholder="https://resim-adresi.com/gorsel.jpg"
+                                   required />
                         </div>
 
-                        <div class="col-md-6 mb-4">
-                            <label class="form-label fw-bold text-dark">Alt Başlık</label>
-                            <input type="text" asp-for="SubTitle" class="form-control form-control-lg fs-15 border-secondary-subtle" placeholder="Örn: 7/24 Kesintisiz Hizmet" required>
-                        </div>
-
-                        <div class="col-md-12 mb-4">
-                            <label class="form-label fw-bold text-dark">Görsel URL (ImageUrl)</label>
-                            <div class="input-group shadow-sm">
-                                <span class="input-group-text bg-light border-secondary-subtle"><i class="mdi mdi-link-variant"></i></span>
-                                <input type="text" asp-for="ImageUrl" id="imageUrlInput" class="form-control border-secondary-subtle" placeholder="https://resim-adresi.com/gorsel.jpg" required>
-                            </div>
-
-                            <div id="imagePreviewContainer" class="mt-3 d-none">
-                                <div class="position-relative d-inline-block">
-                                    <img src="" id="imgPreview" alt="Önizleme" class="img-thumbnail shadow-sm" style="max-height: 180px; border: 2px solid #eee;">
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">Canlı Önizleme</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 mb-4">
-                            <label class="form-label fw-bold text-dark">Açıklama Metni</label>
-                            <textarea asp-for="Description" class="form-control border-secondary-subtle" rows="4" placeholder="Slider üzerinde yer alacak kısa açıklama yazısı..."></textarea>
+                        <div id="imagePreviewContainer" class="image-preview-box">
+                            <img src="" id="imgPreview" alt="Önizleme" />
+                            <div class="image-preview-label">Canlı önizleme</div>
                         </div>
                     </div>
 
-                    <hr class="my-4 opacity-25">
-
-                    <div class="d-flex justify-content-end gap-2">
-                        <a href="/Admin/Slider/Index" class="btn btn-light px-4 fw-medium border">Vazgeç</a>
-                        <button type="submit" class="btn btn-success px-5 fw-bold shadow-sm">
-                            <i class="mdi mdi-plus-circle me-1"></i> Slider'ı Sisteme Ekle
-                        </button>
+                    <div class="col-12">
+                        <label class="form-field-label">Açıklama Metni</label>
+                        <textarea asp-for="Description"
+                                  class="form-field-textarea"
+                                  placeholder="Slider üzerinde yer alacak kısa açıklama yazısı..."></textarea>
                     </div>
-                </form>
-            </div>
+
+                </div>
+
+                <hr class="form-divider" />
+
+                <div class="form-actions">
+                    <a href="/Admin/Slider/Index" class="btn-form-cancel">Vazgeç</a>
+                    <button type="submit" class="btn-form-save">
+                        <i class="mdi mdi-plus-circle"></i> Slider'ı Sisteme Ekle
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -67,17 +294,17 @@
         const previewImg = document.getElementById('imgPreview');
 
         urlInput.addEventListener('input', function () {
-            const url = this.value;
-            if (url && url.trim() !== '') {
+            const url = this.value.trim();
+            if (url) {
                 previewImg.src = url;
-                previewContainer.classList.remove('d-none');
+                previewContainer.style.display = 'block';
             } else {
-                previewContainer.classList.add('d-none');
+                previewContainer.style.display = 'none';
             }
         });
 
-        previewImg.onerror = function() {
-            previewContainer.classList.add('d-none');
+        previewImg.onerror = function () {
+            previewContainer.style.display = 'none';
         };
     </script>
 }

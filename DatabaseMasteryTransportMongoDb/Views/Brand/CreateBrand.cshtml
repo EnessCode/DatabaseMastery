@@ -1,13 +1,13 @@
-﻿@model GetSliderByIdDto
+﻿@model CreateBrandDto
 @{
-    ViewData["Title"] = "Slider Güncelle";
+    ViewData["Title"] = "Yeni Marka Ekle";
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
 <style>
     @@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
 
-    .update-slider-page {
+    .create-brand-page {
         font-family: 'DM Sans', sans-serif;
     }
 
@@ -16,7 +16,7 @@
         border-radius: 14px;
         border: 1px solid #e8e6e0;
         overflow: hidden;
-        max-width: 860px;
+        max-width: 820px;
         margin: 0 auto;
     }
 
@@ -93,31 +93,6 @@
             color: #b4b2a9;
         }
 
-    .form-field-textarea {
-        width: 100%;
-        padding: 10px 14px;
-        border-radius: 9px;
-        border: 1px solid #d3d1c7;
-        font-size: 13.5px;
-        color: #1a1a18;
-        background: #ffffff;
-        font-family: 'DM Sans', sans-serif;
-        transition: border-color 0.15s ease, box-shadow 0.15s ease;
-        outline: none;
-        resize: vertical;
-        min-height: 110px;
-        line-height: 1.6;
-    }
-
-        .form-field-textarea:focus {
-            border-color: #888780;
-            box-shadow: 0 0 0 3px rgba(136, 135, 128, 0.08);
-        }
-
-        .form-field-textarea::placeholder {
-            color: #b4b2a9;
-        }
-
     .input-icon-wrap {
         position: relative;
     }
@@ -136,66 +111,65 @@
             padding-left: 38px;
         }
 
-    .image-preview-box {
+    .toggle-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 11px 14px;
+        background: #f8f7f3;
+        border-radius: 9px;
+        border: 1px solid #e8e6e0;
+        height: 42px;
+    }
+
+        .toggle-row .form-check-input {
+            width: 36px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .toggle-row .form-check-label {
+            font-size: 13px;
+            color: #444441;
+            cursor: pointer;
+            margin: 0;
+        }
+
+    .logo-preview-box {
         margin-top: 14px;
         background: #f8f7f3;
         border-radius: 10px;
         border: 1px dashed #d3d1c7;
-        overflow: hidden;
-        transition: border-color 0.2s ease, background 0.2s ease;
-    }
-
-        .image-preview-box.updated {
-            border-color: #9FE1CB;
-            background: #f4fbf8;
-        }
-
-        .image-preview-box img {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            display: block;
-        }
-
-    .image-preview-footer {
-        padding: 8px 14px;
-        border-top: 1px solid #f0ede6;
-        background: #fff;
+        padding: 18px 20px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        gap: 16px;
     }
 
-    .image-preview-footer-label {
-        font-size: 12px;
-        color: #888780;
-    }
-
-    .img-status-badge {
-        display: inline-flex;
+    .logo-preview-slot {
+        width: 68px;
+        height: 68px;
+        background: #ffffff;
+        border-radius: 10px;
+        border: 1px solid #e8e6e0;
+        display: flex;
         align-items: center;
-        gap: 5px;
-        font-size: 11px;
-        font-weight: 500;
-        padding: 3px 9px;
-        border-radius: 100px;
+        justify-content: center;
+        flex-shrink: 0;
+        overflow: hidden;
     }
 
-        .img-status-badge.current {
-            background: #e6f1fb;
-            color: #185FA5;
+        .logo-preview-slot img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
 
-        .img-status-badge.new {
-            background: #eaf3de;
-            color: #3b6d11;
-        }
-
-    .img-status-badge-dot {
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background: currentColor;
+    .logo-preview-info {
+        font-size: 12.5px;
+        color: #888780;
+        line-height: 1.6;
     }
 
     .form-divider {
@@ -251,79 +225,73 @@
         }
 </style>
 
-<div class="update-slider-page">
+<div class="create-brand-page">
     <div class="form-card">
         <div class="form-card-header">
             <div class="form-header-icon">
-                <i class="mdi mdi-square-edit-outline"></i>
+                <i class="mdi mdi-tag-plus-outline"></i>
             </div>
             <div class="form-header-text">
-                <h5>Slider İçeriğini Düzenle</h5>
-                <p>Seçili slider kaydı üzerindeki bilgileri buradan güncelleyebilirsiniz.</p>
+                <h5>Yeni İş Ortağı / Marka Ekle</h5>
+                <p>Anlaşmalı olduğumuz markaların logolarını ve isimlerini sisteme buradan dahil edebilirsiniz.</p>
             </div>
         </div>
 
         <div class="form-card-body">
             <form method="post">
-                <input type="hidden" asp-for="SliderId" />
-
                 <div class="row g-4">
 
-                    <div class="col-md-6">
-                        <label class="form-field-label">Slider Başlığı</label>
+                    <div class="col-md-8">
+                        <label class="form-field-label">Marka / Şirket Adı</label>
                         <input type="text"
-                               asp-for="Title"
+                               asp-for="BrandName"
                                class="form-field-input"
-                               placeholder="Başlık giriniz..."
+                               placeholder="Örn: Global Logistics Group"
                                required />
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="form-field-label">Alt Başlık</label>
-                        <input type="text"
-                               asp-for="SubTitle"
-                               class="form-field-input"
-                               placeholder="Alt başlık giriniz..."
-                               required />
+                    <div class="col-md-4">
+                        <label class="form-field-label">Görünürlük Durumu</label>
+                        <div class="toggle-row">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   asp-for="IsStatus"
+                                   id="statusSwitch"
+                                   checked />
+                            <label class="form-check-label" for="statusSwitch">Ana sayfada gösterilsin</label>
+                        </div>
                     </div>
 
                     <div class="col-12">
-                        <label class="form-field-label">Görsel URL</label>
+                        <label class="form-field-label">Logo URL</label>
                         <div class="input-icon-wrap">
                             <i class="mdi mdi-link-variant input-prefix-icon"></i>
                             <input type="text"
                                    asp-for="ImageUrl"
-                                   id="imageUrlInput"
+                                   id="logoUrlInput"
                                    class="form-field-input"
+                                   placeholder="https://marka-sitesi.com/logo.png"
                                    required />
                         </div>
 
-                        <div id="imagePreviewContainer" class="image-preview-box">
-                            <img src="@Model.ImageUrl" id="imgPreview" alt="Önizleme" />
-                            <div class="image-preview-footer">
-                                <span class="image-preview-footer-label" id="previewLabel">Mevcut görsel</span>
-                                <span id="imgBadge" class="img-status-badge current">
-                                    <span class="img-status-badge-dot"></span> Kayıtlı
-                                </span>
+                        <div id="logoPreviewContainer" class="logo-preview-box" style="display:none;">
+                            <div class="logo-preview-slot">
+                                <img src="" id="logoPreview" alt="Marka Logo" />
+                            </div>
+                            <div class="logo-preview-info">
+                                Logo yüklendi.<br>
+                                <span style="font-size:11px; color:#b4b2a9;">Görünmüyorsa URL'yi kontrol edin.</span>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-12">
-                        <label class="form-field-label">Açıklama Metni</label>
-                        <textarea asp-for="Description"
-                                  class="form-field-textarea"
-                                  placeholder="Açıklama yazınız..."></textarea>
-                    </div>
-
                 </div>
 
                 <hr class="form-divider" />
 
                 <div class="form-actions">
-                    <a href="/Admin/Slider/Index" class="btn-form-cancel">Vazgeç</a>
+                    <a href="/Brand/BrandList" class="btn-form-cancel">Vazgeç</a>
                     <button type="submit" class="btn-form-save">
-                        <i class="mdi mdi-check-all"></i> Değişiklikleri Kaydet
+                        <i class="mdi mdi-check-all"></i> Markayı Kaydet
                     </button>
                 </div>
             </form>
@@ -333,33 +301,22 @@
 
 @section Scripts {
     <script>
-        const urlInput = document.getElementById('imageUrlInput');
-        const previewImg = document.getElementById('imgPreview');
-        const previewContainer = document.getElementById('imagePreviewContainer');
-        const previewLabel = document.getElementById('previewLabel');
-        const imgBadge = document.getElementById('imgBadge');
+        const urlInput = document.getElementById('logoUrlInput');
+        const previewContainer = document.getElementById('logoPreviewContainer');
+        const previewImg = document.getElementById('logoPreview');
 
         urlInput.addEventListener('input', function () {
             const url = this.value.trim();
             if (url) {
                 previewImg.src = url;
-                previewContainer.classList.add('updated');
-                previewLabel.textContent = 'Yeni görsel algılandı';
-                imgBadge.className = 'img-status-badge new';
-                imgBadge.innerHTML = '<span class="img-status-badge-dot"></span> Güncellendi';
+                previewContainer.style.display = 'flex';
             } else {
-                previewContainer.classList.remove('updated');
-                previewLabel.textContent = 'Mevcut görsel';
-                imgBadge.className = 'img-status-badge current';
-                imgBadge.innerHTML = '<span class="img-status-badge-dot"></span> Kayıtlı';
+                previewContainer.style.display = 'none';
             }
         });
 
         previewImg.onerror = function () {
-            previewContainer.classList.remove('updated');
-            previewLabel.textContent = 'Geçersiz URL';
-            imgBadge.className = 'img-status-badge current';
-            imgBadge.innerHTML = '<span class="img-status-badge-dot"></span> Hata';
+            previewContainer.style.display = 'none';
         };
     </script>
 }
