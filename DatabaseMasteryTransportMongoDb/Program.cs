@@ -1,4 +1,5 @@
 using DatabaseMasteryTransportMongoDb.Services.BrandServices;
+using DatabaseMasteryTransportMongoDb.Services.OfferServices;
 using DatabaseMasteryTransportMongoDb.Services.SliderServices;
 using DatabaseMasteryTransportMongoDb.Settings;
 using Microsoft.Extensions.Options;
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<ISliderService, SliderService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
+builder.Services.AddScoped<IOfferService, OfferService>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

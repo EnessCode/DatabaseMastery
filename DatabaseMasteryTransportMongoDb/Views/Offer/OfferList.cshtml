@@ -1,0 +1,338 @@
+﻿@model List<ResultOfferDto>
+@{
+    ViewData["Title"] = "Hizmetler";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+    .offer-page {
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+    }
+
+    .page-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: #1a1a18;
+        margin-bottom: 4px;
+    }
+
+    .page-subtitle {
+        font-size: 13px;
+        color: #888780;
+        margin: 0;
+    }
+
+    .btn-add {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #1a1a18;
+        color: #f4f3ef;
+        border: none;
+        border-radius: 100px;
+        padding: 10px 20px;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background 0.18s ease, transform 0.18s ease;
+        white-space: nowrap;
+    }
+
+        .btn-add:hover {
+            background: #333330;
+            color: #f4f3ef;
+            transform: translateY(-1px);
+        }
+
+    .offer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 16px;
+    }
+
+    .offer-card {
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #e8e6e0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .offer-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+        }
+
+    .offer-thumb {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        display: block;
+        background: #f4f3ef;
+    }
+
+    .offer-thumb-placeholder {
+        width: 100%;
+        height: 160px;
+        background: #f4f3ef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #b4b2a9;
+        font-size: 32px;
+    }
+
+    .offer-body {
+        padding: 16px 18px 12px;
+        flex: 1;
+        border-top: 1px solid #f0ede6;
+    }
+
+    .offer-top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+
+    .offer-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a18;
+        line-height: 1.4;
+    }
+
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        font-weight: 500;
+        padding: 3px 9px;
+        border-radius: 100px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+        .status-pill.active {
+            background: #eaf3de;
+            color: #3b6d11;
+        }
+
+        .status-pill.inactive {
+            background: #fcebeb;
+            color: #a32d2d;
+        }
+
+    .status-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    .offer-desc {
+        font-size: 12.5px;
+        color: #888780;
+        line-height: 1.6;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .offer-footer {
+        display: flex;
+        gap: 6px;
+        padding: 10px 18px 14px;
+    }
+
+    .btn-action {
+        flex: 1;
+        padding: 7px 0;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1px solid;
+        text-align: center;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        transition: background 0.15s ease;
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-action-edit {
+        background: transparent;
+        border-color: #d3d1c7;
+        color: #444441;
+    }
+
+        .btn-action-edit:hover {
+            background: #f4f3ef;
+            color: #1a1a18;
+        }
+
+    .btn-action-del {
+        background: transparent;
+        border-color: #f7c1c1;
+        color: #a32d2d;
+    }
+
+        .btn-action-del:hover {
+            background: #fcebeb;
+            color: #791f1f;
+        }
+
+    .empty-state {
+        grid-column: 1 / -1;
+        padding: 4rem 2rem;
+        text-align: center;
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #e8e6e0;
+    }
+
+    .empty-icon-wrap {
+        width: 64px;
+        height: 64px;
+        background: #f4f3ef;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        font-size: 24px;
+        color: #b4b2a9;
+    }
+
+    .empty-state h5 {
+        font-size: 15px;
+        font-weight: 600;
+        color: #1a1a18;
+        margin-bottom: 5px;
+    }
+
+    .empty-state p {
+        font-size: 13px;
+        color: #888780;
+        margin: 0;
+    }
+
+    .list-footer {
+        margin-top: 1rem;
+        text-align: right;
+        font-size: 12px;
+        color: #888780;
+    }
+
+        .list-footer strong {
+            color: #444441;
+            font-weight: 600;
+        }
+</style>
+
+<div class="offer-page">
+    <div class="page-header">
+        <div>
+            <h3 class="page-title">Hizmetler</h3>
+            <p class="page-subtitle">Ana sayfada gösterilen hizmet kartlarını yönetin.</p>
+        </div>
+        <a href="/Offer/CreateOffer" class="btn-add">
+            <i class="mdi mdi-plus-circle"></i> Yeni Hizmet Ekle
+        </a>
+    </div>
+
+    <div class="offer-grid">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <div class="offer-card">
+                    <img src="@item.ImageUrl"
+                         class="offer-thumb"
+                         alt="@item.Title"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                    <div class="offer-thumb-placeholder" style="display:none;">
+                        <i class="mdi mdi-image-off-outline"></i>
+                    </div>
+
+                    <div class="offer-body">
+                        <div class="offer-top-row">
+                            <div class="offer-title">@item.Title</div>
+                            @if (item.IsStatus)
+                            {
+                                <span class="status-pill active"><span class="status-dot"></span> Aktif</span>
+                            }
+                            else
+                            {
+                                <span class="status-pill inactive"><span class="status-dot"></span> Pasif</span>
+                            }
+                        </div>
+                        <div class="offer-desc" title="@item.Description">@item.Description</div>
+                    </div>
+
+                    <div class="offer-footer">
+                        <a href="/Offer/UpdateOffer/@item.OfferId" class="btn-action btn-action-edit">
+                            <i class="mdi mdi-pencil"></i> Düzenle
+                        </a>
+                        <button type="button" onclick="deleteOffer('@item.OfferId')" class="btn-action btn-action-del">
+                            <i class="mdi mdi-delete-outline"></i> Sil
+                        </button>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-state">
+                <div class="empty-icon-wrap">
+                    <i class="mdi mdi-briefcase-off-outline"></i>
+                </div>
+                <h5>Henüz Hizmet Eklenmemiş</h5>
+                <p>Yeni hizmet ekleyerek ana sayfanızı özelleştirmeye başlayabilirsiniz.</p>
+            </div>
+        }
+    </div>
+
+    <div class="list-footer">
+        Toplam Kayıt: <strong>@Model.Count</strong>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function deleteOffer(id) {
+            Swal.fire({
+                title: 'Hizmeti Sil?',
+                text: "Bu içerik kalıcı olarak silinecektir.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#a32d2d',
+                cancelButtonColor: '#888780',
+                confirmButtonText: 'Evet, Sil',
+                cancelButtonText: 'Vazgeç'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/Offer/DeleteOffer/" + id;
+                }
+            });
+        }
+    </script>
+}
