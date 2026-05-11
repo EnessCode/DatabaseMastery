@@ -5,16 +5,16 @@ namespace DatabaseMasteryTransportMongoDb.ViewComponents.DefaultViewComponents
 {
 	public class DefaultBrandViewComponent : ViewComponent
 	{
-		private readonly IBrandService _BrandService;
+		private readonly IBrandService _brandService;
 
 		public DefaultBrandViewComponent(IBrandService BrandService)
 		{
-			_BrandService = BrandService;
+			_brandService = BrandService;
 		}
 
 		public async Task<IViewComponentResult> InvokeAsync()
 		{
-			var values = await _BrandService.GetAllBrandAsync();
+			var values = await _brandService.GetAllBrandAsync();
 			return View(values);
 		}
 	}

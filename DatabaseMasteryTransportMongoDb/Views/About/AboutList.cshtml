@@ -1,0 +1,324 @@
+﻿@model List<ResultAboutDto>
+@{
+	ViewData["Title"] = "Hakkımızda";
+	Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+	@@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+	.about-page {
+		font-family: 'DM Sans', sans-serif;
+	}
+
+	.page-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		margin-bottom: 1.5rem;
+	}
+
+	.page-title {
+		font-size: 22px;
+		font-weight: 600;
+		color: #1a1a18;
+		margin-bottom: 4px;
+	}
+
+	.page-subtitle {
+		font-size: 13px;
+		color: #888780;
+		margin: 0;
+	}
+
+	.btn-add {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		background: #1a1a18;
+		color: #f4f3ef;
+		border: none;
+		border-radius: 100px;
+		padding: 10px 20px;
+		font-size: 13px;
+		font-weight: 500;
+		text-decoration: none;
+		transition: background 0.18s ease, transform 0.18s ease;
+		white-space: nowrap;
+	}
+
+		.btn-add:hover {
+			background: #333330;
+			color: #f4f3ef;
+			transform: translateY(-1px);
+		}
+
+	.about-list {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+
+	.about-card {
+		background: #fff;
+		border-radius: 14px;
+		border: 1px solid #e8e6e0;
+		overflow: hidden;
+		display: flex;
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+		.about-card:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 10px 24px rgba(0,0,0,0.07);
+		}
+
+	.about-thumb-wrap {
+		width: 200px;
+		flex-shrink: 0;
+		overflow: hidden;
+	}
+
+	.about-thumb {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		min-height: 150px;
+	}
+
+	.about-thumb-placeholder {
+		width: 100%;
+		height: 100%;
+		min-height: 150px;
+		background: #f4f3ef;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #b4b2a9;
+		font-size: 32px;
+	}
+
+	.about-body {
+		padding: 20px 22px;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		border-left: 1px solid #f0ede6;
+	}
+
+	.about-title {
+		font-size: 16px;
+		font-weight: 600;
+		color: #1a1a18;
+		margin-bottom: 10px;
+	}
+
+	.about-desc {
+		font-size: 13px;
+		color: #888780;
+		line-height: 1.7;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		flex: 1;
+		margin-bottom: 16px;
+	}
+
+	.about-actions {
+		display: flex;
+		gap: 8px;
+	}
+
+	.btn-action {
+		padding: 7px 18px;
+		border-radius: 8px;
+		font-size: 12px;
+		font-weight: 500;
+		cursor: pointer;
+		border: 1px solid;
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		transition: background 0.15s ease;
+		font-family: 'DM Sans', sans-serif;
+	}
+
+	.btn-action-edit {
+		background: transparent;
+		border-color: #d3d1c7;
+		color: #444441;
+	}
+
+		.btn-action-edit:hover {
+			background: #f4f3ef;
+			color: #1a1a18;
+		}
+
+	.btn-action-del {
+		background: transparent;
+		border-color: #f7c1c1;
+		color: #a32d2d;
+	}
+
+		.btn-action-del:hover {
+			background: #fcebeb;
+			color: #791f1f;
+		}
+
+	.empty-state {
+		padding: 4rem 2rem;
+		text-align: center;
+		background: #fff;
+		border-radius: 14px;
+		border: 1px solid #e8e6e0;
+	}
+
+	.empty-icon-wrap {
+		width: 64px;
+		height: 64px;
+		background: #f4f3ef;
+		border-radius: 50%;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 1rem;
+		font-size: 24px;
+		color: #b4b2a9;
+	}
+
+	.empty-state h5 {
+		font-size: 15px;
+		font-weight: 600;
+		color: #1a1a18;
+		margin-bottom: 5px;
+	}
+
+	.empty-state p {
+		font-size: 13px;
+		color: #888780;
+		margin: 0;
+	}
+
+	.list-footer {
+		margin-top: 1rem;
+		text-align: right;
+		font-size: 12px;
+		color: #888780;
+	}
+
+		.list-footer strong {
+			color: #444441;
+			font-weight: 600;
+		}
+
+	.status-info {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 16px;
+		background: #f0fdf4;
+		color: #166534;
+		border: 1px solid #bbf7d0;
+		border-radius: 100px;
+		font-size: 13px;
+		font-weight: 500;
+	}
+</style>
+
+<div class="about-page">
+	<div class="page-header">
+		<div>
+			<h3 class="page-title">Hakkımızda</h3>
+			<p class="page-subtitle">Ana sayfada gösterilen hakkımızda içeriklerini yönetin.</p>
+		</div>
+
+		@if (Model != null && Model.Count == 0)
+		{
+			<a href="/About/CreateAbout" class="btn-add">
+				<i class="mdi mdi-plus-circle"></i> Yeni İçerik Ekle
+			</a>
+		}
+		else
+		{
+			<div class="status-info shadow-sm">
+				<i class="mdi mdi-check-decagram fs-5"></i>
+				Hakkımızda içeriği yayında
+			</div>
+		}
+	</div>
+
+	<div class="about-list">
+		@if (Model != null && Model.Any())
+		{
+			@foreach (var item in Model)
+			{
+				<div class="about-card">
+					<div class="about-thumb-wrap">
+						<img src="@item.ImageUrl"
+							 class="about-thumb"
+							 alt="@item.Title"
+							 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+						<div class="about-thumb-placeholder" style="display:none;">
+							<i class="mdi mdi-image-off-outline"></i>
+						</div>
+					</div>
+
+					<div class="about-body">
+						<div>
+							<div class="about-title">@item.Title</div>
+							<div class="about-desc" title="@item.Description">@item.Description</div>
+						</div>
+						<div class="about-actions">
+							<a href="/About/UpdateAbout/@item.AboutId" class="btn-action btn-action-edit">
+								<i class="mdi mdi-pencil"></i> Düzenle
+							</a>
+							<button type="button" onclick="deleteAbout('@item.AboutId')" class="btn-action btn-action-del">
+								<i class="mdi mdi-delete-outline"></i> Sil
+							</button>
+						</div>
+					</div>
+				</div>
+			}
+		}
+		else
+		{
+			<div class="empty-state">
+				<div class="empty-icon-wrap">
+					<i class="mdi mdi-information-off-outline"></i>
+				</div>
+				<h5>Henüz İçerik Eklenmemiş</h5>
+				<p>Yeni içerik ekleyerek hakkımızda bölümünü oluşturmaya başlayabilirsiniz.</p>
+			</div>
+		}
+	</div>
+
+	<div class="list-footer">
+		Toplam Kayıt: <strong>@Model.Count</strong>
+	</div>
+</div>
+
+@section Scripts {
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+		function deleteAbout(id) {
+			Swal.fire({
+				title: 'İçeriği Sil?',
+				text: "Bu içerik kalıcı olarak silinecektir.",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#a32d2d',
+				cancelButtonColor: '#888780',
+				confirmButtonText: 'Evet, Sil',
+				cancelButtonText: 'Vazgeç'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					window.location.href = "/About/DeleteAbout/" + id;
+				}
+			});
+		}
+	</script>
+}

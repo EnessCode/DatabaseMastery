@@ -6,16 +6,16 @@ namespace DatabaseMasteryTransportMongoDb.Controllers
 {
 	public class BrandController : Controller
 	{
-		private readonly IBrandService _BrandService;
+		private readonly IBrandService _brandService;
 
 		public BrandController(IBrandService BrandService)
 		{
-			_BrandService = BrandService;
+			_brandService = BrandService;
 		}
 
 		public async Task<IActionResult> BrandList()
 		{
-			var values = await _BrandService.GetAllBrandAsync();
+			var values = await _brandService.GetAllBrandAsync();
 			return View(values);
 		}
 
@@ -28,28 +28,28 @@ namespace DatabaseMasteryTransportMongoDb.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateBrand(CreateBrandDto createBrandDto)
 		{
-			await _BrandService.CreateBrandAsync(createBrandDto);
+			await _brandService.CreateBrandAsync(createBrandDto);
 			return RedirectToAction("BrandList");
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> DeleteBrand(string id)
 		{
-			await _BrandService.DeleteBrandAsync(id);
+			await _brandService.DeleteBrandAsync(id);
 			return RedirectToAction("BrandList");
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> UpdateBrand(string id)
 		{
-			var value = await _BrandService.GetBrandByIdAsync(id);
+			var value = await _brandService.GetBrandByIdAsync(id);
 			return View(value);
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> UpdateBrand(UpdateBrandDto updateBrandDto)
 		{
-			await _BrandService.UpdateBrandAsync(updateBrandDto);
+			await _brandService.UpdateBrandAsync(updateBrandDto);
 			return RedirectToAction("BrandList");
 		}
 	}

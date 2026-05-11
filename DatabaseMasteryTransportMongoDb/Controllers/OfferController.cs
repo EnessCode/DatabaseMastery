@@ -6,16 +6,16 @@ namespace DatabaseMasteryTransportMongoDb.Controllers
 {
 	public class OfferController : Controller
 	{
-		private readonly IOfferService _OfferService;
+		private readonly IOfferService _offerService;
 
 		public OfferController(IOfferService OfferService)
 		{
-			_OfferService = OfferService;
+			_offerService = OfferService;
 		}
 
 		public async Task<IActionResult> OfferList()
 		{
-			var values = await _OfferService.GetAllOfferAsync();
+			var values = await _offerService.GetAllOfferAsync();
 			return View(values);
 		}
 
@@ -28,28 +28,28 @@ namespace DatabaseMasteryTransportMongoDb.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateOffer(CreateOfferDto createOfferDto)
 		{
-			await _OfferService.CreateOfferAsync(createOfferDto);
+			await _offerService.CreateOfferAsync(createOfferDto);
 			return RedirectToAction("OfferList");
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> DeleteOffer(string id)
 		{
-			await _OfferService.DeleteOfferAsync(id);
+			await _offerService.DeleteOfferAsync(id);
 			return RedirectToAction("OfferList");
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> UpdateOffer(string id)
 		{
-			var value = await _OfferService.GetOfferByIdAsync(id);
+			var value = await _offerService.GetOfferByIdAsync(id);
 			return View(value);
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> UpdateOffer(UpdateOfferDto updateOfferDto)
 		{
-			await _OfferService.UpdateOfferAsync(updateOfferDto);
+			await _offerService.UpdateOfferAsync(updateOfferDto);
 			return RedirectToAction("OfferList");
 		}
 	}

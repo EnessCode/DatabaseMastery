@@ -5,16 +5,16 @@ namespace DatabaseMasteryTransportMongoDb.ViewComponents.DefaultViewComponents
 {
 	public class DefaultOfferViewComponent : ViewComponent
 	{
-		private readonly IOfferService _OfferService;
+		private readonly IOfferService _offerService;
 
 		public DefaultOfferViewComponent(IOfferService OfferService)
 		{
-			_OfferService = OfferService;
+			_offerService = OfferService;
 		}
 
 		public async Task<IViewComponentResult> InvokeAsync()
 		{
-			var values = await _OfferService.GetAllOfferAsync();
+			var values = await _offerService.GetAllOfferAsync();
 			return View(values);
 		}
 	}
