@@ -1,0 +1,399 @@
+﻿@model GetHowItWorkByIdDto
+@{
+    ViewData["Title"] = "Adım Güncelle";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+    .update-hiw-page {
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .form-card {
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #e8e6e0;
+        overflow: hidden;
+        max-width: 860px;
+        margin: 0 auto;
+    }
+
+    .form-card-header {
+        padding: 20px 26px 18px;
+        border-bottom: 1px solid #f0ede6;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .form-header-icon {
+        width: 42px;
+        height: 42px;
+        background: #f4f3ef;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .form-header-icon i {
+            font-size: 20px;
+            color: #444441;
+        }
+
+    .form-header-text h5 {
+        font-size: 15px;
+        font-weight: 600;
+        color: #1a1a18;
+        margin-bottom: 3px;
+    }
+
+    .form-header-text p {
+        font-size: 12.5px;
+        color: #888780;
+        margin: 0;
+    }
+
+    .form-card-body {
+        padding: 26px;
+    }
+
+    .form-field-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 500;
+        color: #444441;
+        margin-bottom: 7px;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+    }
+
+    .form-field-input {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 9px;
+        border: 1px solid #d3d1c7;
+        font-size: 13.5px;
+        color: #1a1a18;
+        background: #fff;
+        font-family: 'DM Sans', sans-serif;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        outline: none;
+    }
+
+        .form-field-input:focus {
+            border-color: #888780;
+            box-shadow: 0 0 0 3px rgba(136,135,128,0.08);
+        }
+
+        .form-field-input::placeholder {
+            color: #b4b2a9;
+        }
+
+    .form-field-textarea {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 9px;
+        border: 1px solid #d3d1c7;
+        font-size: 13.5px;
+        color: #1a1a18;
+        background: #fff;
+        font-family: 'DM Sans', sans-serif;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        outline: none;
+        resize: vertical;
+        min-height: 110px;
+        line-height: 1.7;
+    }
+
+        .form-field-textarea:focus {
+            border-color: #888780;
+            box-shadow: 0 0 0 3px rgba(136,135,128,0.08);
+        }
+
+        .form-field-textarea::placeholder {
+            color: #b4b2a9;
+        }
+
+    .input-icon-wrap {
+        position: relative;
+    }
+
+        .input-icon-wrap .input-prefix-icon {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #888780;
+            pointer-events: none;
+        }
+
+        .input-icon-wrap .form-field-input {
+            padding-left: 38px;
+        }
+
+    .toggle-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 11px 14px;
+        background: #f8f7f3;
+        border-radius: 9px;
+        border: 1px solid #e8e6e0;
+        height: 42px;
+    }
+
+        .toggle-row .form-check-input {
+            width: 36px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .toggle-row .form-check-label {
+            font-size: 13px;
+            color: #444441;
+            cursor: pointer;
+            margin: 0;
+        }
+
+    .icon-preview-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 14px;
+        padding: 14px 16px;
+        border-radius: 10px;
+        border: 1px dashed #d3d1c7;
+        background: #f8f7f3;
+        transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+        .icon-preview-row.updated {
+            border-color: #9FE1CB;
+            background: #f4fbf8;
+        }
+
+    .icon-preview-circle {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: #fdf8e8;
+        border: 1px solid #f0e6b0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        overflow: hidden;
+    }
+
+        .icon-preview-circle img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+    .icon-preview-info {
+        font-size: 12px;
+        color: #888780;
+        line-height: 1.7;
+        flex: 1;
+    }
+
+    .img-status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        font-weight: 500;
+        padding: 3px 9px;
+        border-radius: 100px;
+    }
+
+        .img-status-badge.current {
+            background: #e6f1fb;
+            color: #185FA5;
+        }
+
+        .img-status-badge.new {
+            background: #eaf3de;
+            color: #3b6d11;
+        }
+
+    .img-status-badge-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    .form-divider {
+        border: none;
+        border-top: 1px solid #f0ede6;
+        margin: 24px 0;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .btn-form-cancel {
+        padding: 10px 22px;
+        border-radius: 9px;
+        border: 1px solid #d3d1c7;
+        background: transparent;
+        color: #444441;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        transition: background 0.15s ease;
+    }
+
+        .btn-form-cancel:hover {
+            background: #f4f3ef;
+            color: #1a1a18;
+        }
+
+    .btn-form-save {
+        padding: 10px 26px;
+        border-radius: 9px;
+        border: none;
+        background: #1a1a18;
+        color: #f4f3ef;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: 'DM Sans', sans-serif;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+        .btn-form-save:hover {
+            background: #333330;
+            transform: translateY(-1px);
+        }
+</style>
+
+<div class="update-hiw-page">
+    <div class="form-card">
+        <div class="form-card-header">
+            <div class="form-header-icon">
+                <i class="mdi mdi-lightbulb-outline"></i>
+            </div>
+            <div class="form-header-text">
+                <h5>Süreç Adımını Güncelle</h5>
+                <p>Seçili adıma ait başlık, ikon ve açıklama bilgilerini düzenleyebilirsiniz.</p>
+            </div>
+        </div>
+
+        <div class="form-card-body">
+            <form method="post">
+                <input type="hidden" asp-for="HowItWorkId" />
+
+                <div class="row g-4">
+
+                    <div class="col-md-8">
+                        <label class="form-field-label">Adım Başlığı</label>
+                        <input type="text"
+                               asp-for="Title"
+                               class="form-field-input"
+                               placeholder="Adım başlığını giriniz..."
+                               required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-field-label">Görünürlük Durumu</label>
+                        <div class="toggle-row">
+                            <input class="form-check-input" type="checkbox" asp-for="Status" id="statusSwitch" />
+                            <label class="form-check-label" for="statusSwitch">Aktif olarak yayınla</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-field-label">İkon URL</label>
+                        <div class="input-icon-wrap">
+                            <i class="mdi mdi-link-variant input-prefix-icon"></i>
+                            <input type="text"
+                                   asp-for="IconUrl"
+                                   id="iconUrlInput"
+                                   class="form-field-input"
+                                   required />
+                        </div>
+
+                        <div id="iconPreviewContainer" class="icon-preview-row">
+                            <div class="icon-preview-circle">
+                                <img src="@Model.IconUrl" id="iconPreview" alt="İkon" />
+                            </div>
+                            <div class="icon-preview-info">
+                                <span id="previewLabel">Mevcut ikon</span><br>
+                                <span id="iconBadge" class="img-status-badge current">
+                                    <span class="img-status-badge-dot"></span> Kayıtlı
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-field-label">Açıklama</label>
+                        <textarea asp-for="Description"
+                                  class="form-field-textarea"
+                                  placeholder="Açıklama giriniz..."></textarea>
+                    </div>
+
+                </div>
+
+                <hr class="form-divider" />
+
+                <div class="form-actions">
+                    <a href="/HowItWork/HowItWorkList" class="btn-form-cancel">Vazgeç</a>
+                    <button type="submit" class="btn-form-save">
+                        <i class="mdi mdi-check-all"></i> Değişiklikleri Uygula
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const urlInput = document.getElementById('iconUrlInput');
+        const previewImg = document.getElementById('iconPreview');
+        const previewContainer = document.getElementById('iconPreviewContainer');
+        const previewLabel = document.getElementById('previewLabel');
+        const iconBadge = document.getElementById('iconBadge');
+
+        urlInput.addEventListener('input', function () {
+            const url = this.value.trim();
+            if (url) {
+                previewImg.src = url;
+                previewContainer.classList.add('updated');
+                previewLabel.textContent = 'Yeni ikon algılandı';
+                iconBadge.className = 'img-status-badge new';
+                iconBadge.innerHTML = '<span class="img-status-badge-dot"></span> Güncellendi';
+            } else {
+                previewContainer.classList.remove('updated');
+                previewLabel.textContent = 'Mevcut ikon';
+                iconBadge.className = 'img-status-badge current';
+                iconBadge.innerHTML = '<span class="img-status-badge-dot"></span> Kayıtlı';
+            }
+        });
+
+        previewImg.onerror = function () {
+            previewContainer.classList.remove('updated');
+            previewLabel.textContent = 'Geçersiz URL';
+            iconBadge.className = 'img-status-badge current';
+            iconBadge.innerHTML = '<span class="img-status-badge-dot"></span> Hata';
+        };
+    </script>
+}

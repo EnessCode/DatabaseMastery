@@ -1,4 +1,5 @@
-﻿<section class="section pt-85 bg-worldmap">
+﻿@model List<ResultHowItWorkDto>
+<section class="section pt-85 bg-worldmap">
 	<div class="container">
 		<div class="text-center">
 			<img class="mb-15" src="/templates/assets/imgs/template/icons/favicon.svg" alt="transp">
@@ -13,7 +14,7 @@
 					<img class="w-100" src="/templates/assets/imgs/page/homepage1/how-it-work.png" alt="transp">
 					<div class="box-info-bottom-img">
 						<div class="image-play">
-							<img class="mb-15" src="assets/imgs/template/icons/play.svg" alt="transp">
+							<img class="mb-15" src="/templates/assets/imgs/template/icons/play.svg" alt="transp">
 						</div>
 						<div class="info-play">
 							<h4 class="color-white mb-15">
@@ -28,62 +29,20 @@
 			</div>
 			<div class="col-lg-6 mb-30">
 				<ul class="list-how-works">
-					<li>
-						<div class="image-how">
-							<span class="img">
-								<img src="/templates/assets/imgs/page/homepage1/order.png" alt="transp">
-							</span>
-						</div>
-						<div class="info-how">
-							<h5 class="color-brand-2">Müşteri sipariş verir</h5>
-							<p class="font-md color-grey-700">Ürünlerin kontrolü ve kalite denetimi yapılır</p>
-						</div>
-					</li>
-					<li>
-						<div class="image-how">
-							<span class="img">
-								<img src="/templates/assets/imgs/page/homepage1/payment.png" alt="transp">
-							</span>
-						</div>
-						<div class="info-how">
-							<h5 class="color-brand-2">Ödeme başarıyla alınır</h5>
-							<p class="font-md color-grey-700">Payoneer, PayPal veya kredi kartı ile ödeme</p>
-						</div>
-					</li>
-					<li>
-						<div class="image-how">
-							<span class="img">
-								<img src="/templates/assets/imgs/page/homepage1/warehouse.png" alt="transp">
-							</span>
-						</div>
-						<div class="info-how">
-							<h5 class="color-brand-2">Depo siparişi teslim alır</h5>
-							<p class="font-md color-grey-700">Ürünlerin doğruluğu kontrol edilir</p>
-						</div>
-					</li>
-					<li>
-						<div class="image-how">
-							<span class="img">
-								<img src="/templates/assets/imgs/page/homepage1/picked.png" alt="transp">
-							</span>
-						</div>
-						<div class="info-how">
-							<h5 class="color-brand-2">Ürün hazırlanır ve sevk edilir</h5>
-							<p class="font-md color-grey-700">Yerel taşıyıcıya teslim edilir</p>
-						</div>
-					</li>
-					<li>
-						<div class="image-how">
-							<span class="img">
-								<img src="/templates/assets/imgs/page/homepage1/delivery.png" alt="transp">
-							</span>
-						</div>
-						<div class="info-how">
-							<h5 class="color-brand-2">Teslimat tamamlanır ve süreç ölçülür</h5>
-							<p class="font-md color-grey-700">Sipariş durumu sistemde güncellenir</p>
-						</div>
-					</li>
-
+					@foreach (var item in Model)
+					{
+						<li>
+							<div class="image-how">
+								<span class="img">
+									<img src="@item.IconUrl" alt="transp">
+								</span>
+							</div>
+							<div class="info-how">
+								<h5 class="color-brand-2">@item.Title</h5>
+								<p class="font-md color-grey-700">@item.Description</p>
+							</div>
+						</li>
+					}
 				</ul>
 
 			</div>
