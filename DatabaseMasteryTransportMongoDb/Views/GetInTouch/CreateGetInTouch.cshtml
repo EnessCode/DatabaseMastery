@@ -1,0 +1,412 @@
+﻿@model CreateGetInTouchDto
+@{
+	ViewData["Title"] = "Yeni İçerik Ekle";
+	Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+	@@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+	.create-git-page {
+		font-family: 'DM Sans', sans-serif;
+	}
+
+	.form-card {
+		background: #fff;
+		border-radius: 14px;
+		border: 1px solid #e8e6e0;
+		overflow: hidden;
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	.form-card-header {
+		padding: 20px 26px 18px;
+		border-bottom: 1px solid #f0ede6;
+		display: flex;
+		align-items: flex-start;
+		gap: 14px;
+	}
+
+	.form-header-icon {
+		width: 42px;
+		height: 42px;
+		background: #f4f3ef;
+		border-radius: 10px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
+
+		.form-header-icon i {
+			font-size: 20px;
+			color: #444441;
+		}
+
+	.form-header-text h5 {
+		font-size: 15px;
+		font-weight: 600;
+		color: #1a1a18;
+		margin-bottom: 3px;
+	}
+
+	.form-header-text p {
+		font-size: 12.5px;
+		color: #888780;
+		margin: 0;
+	}
+
+	.form-card-body {
+		padding: 26px;
+	}
+
+	.section-divider {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin: 8px 0 20px;
+	}
+
+	.section-divider-label {
+		font-size: 11px;
+		font-weight: 600;
+		color: #b4b2a9;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		white-space: nowrap;
+	}
+
+	.section-divider-line {
+		flex: 1;
+		height: 1px;
+		background: #f0ede6;
+	}
+
+	.form-field-label {
+		display: block;
+		font-size: 12px;
+		font-weight: 500;
+		color: #444441;
+		margin-bottom: 7px;
+		letter-spacing: 0.02em;
+		text-transform: uppercase;
+	}
+
+	.form-field-input {
+		width: 100%;
+		padding: 10px 14px;
+		border-radius: 9px;
+		border: 1px solid #d3d1c7;
+		font-size: 13.5px;
+		color: #1a1a18;
+		background: #fff;
+		font-family: 'DM Sans', sans-serif;
+		transition: border-color 0.15s ease, box-shadow 0.15s ease;
+		outline: none;
+	}
+
+		.form-field-input:focus {
+			border-color: #888780;
+			box-shadow: 0 0 0 3px rgba(136,135,128,0.08);
+		}
+
+		.form-field-input::placeholder {
+			color: #b4b2a9;
+		}
+
+	.form-field-textarea {
+		width: 100%;
+		padding: 10px 14px;
+		border-radius: 9px;
+		border: 1px solid #d3d1c7;
+		font-size: 13.5px;
+		color: #1a1a18;
+		background: #fff;
+		font-family: 'DM Sans', sans-serif;
+		transition: border-color 0.15s ease, box-shadow 0.15s ease;
+		outline: none;
+		resize: vertical;
+		min-height: 100px;
+		line-height: 1.7;
+	}
+
+		.form-field-textarea:focus {
+			border-color: #888780;
+			box-shadow: 0 0 0 3px rgba(136,135,128,0.08);
+		}
+
+		.form-field-textarea::placeholder {
+			color: #b4b2a9;
+		}
+
+	.input-icon-wrap {
+		position: relative;
+	}
+
+		.input-icon-wrap .input-prefix-icon {
+			position: absolute;
+			left: 13px;
+			top: 50%;
+			transform: translateY(-50%);
+			font-size: 16px;
+			color: #888780;
+			pointer-events: none;
+		}
+
+		.input-icon-wrap .form-field-input {
+			padding-left: 38px;
+		}
+
+	.sub-group {
+		background: #f8f7f3;
+		border-radius: 10px;
+		border: 1px solid #e8e6e0;
+		padding: 18px 20px;
+	}
+
+	.sub-group-label {
+		font-size: 11px;
+		font-weight: 600;
+		color: #888780;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		margin-bottom: 14px;
+		display: flex;
+		align-items: center;
+		gap: 7px;
+	}
+
+		.sub-group-label i {
+			font-size: 14px;
+		}
+
+	.image-preview-box {
+		margin-top: 14px;
+		background: #f8f7f3;
+		border-radius: 10px;
+		border: 1px dashed #d3d1c7;
+		overflow: hidden;
+		display: none;
+	}
+
+		.image-preview-box img {
+			width: 100%;
+			max-height: 200px;
+			object-fit: cover;
+			display: block;
+		}
+
+	.image-preview-label {
+		padding: 8px 14px;
+		font-size: 11.5px;
+		color: #888780;
+		border-top: 1px solid #f0ede6;
+		background: #fff;
+	}
+
+	.form-divider {
+		border: none;
+		border-top: 1px solid #f0ede6;
+		margin: 24px 0;
+	}
+
+	.form-actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: 8px;
+	}
+
+	.btn-form-cancel {
+		padding: 10px 22px;
+		border-radius: 9px;
+		border: 1px solid #d3d1c7;
+		background: transparent;
+		color: #444441;
+		font-size: 13px;
+		font-weight: 500;
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		transition: background 0.15s ease;
+	}
+
+		.btn-form-cancel:hover {
+			background: #f4f3ef;
+			color: #1a1a18;
+		}
+
+	.btn-form-save {
+		padding: 10px 26px;
+		border-radius: 9px;
+		border: none;
+		background: #1a1a18;
+		color: #f4f3ef;
+		font-size: 13px;
+		font-weight: 500;
+		cursor: pointer;
+		font-family: 'DM Sans', sans-serif;
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		transition: background 0.15s ease, transform 0.15s ease;
+	}
+
+		.btn-form-save:hover {
+			background: #333330;
+			transform: translateY(-1px);
+		}
+</style>
+
+<div class="create-git-page">
+	<div class="form-card">
+		<div class="form-card-header">
+			<div class="form-header-icon">
+				<i class="mdi mdi-phone-plus-outline"></i>
+			</div>
+			<div class="form-header-text">
+				<h5>Yeni İletişim İçeriği Ekle</h5>
+				<p>Ana sayfanın iletişime geç bölümünde gösterilecek bilgileri girin.</p>
+			</div>
+		</div>
+
+		<div class="form-card-body">
+			<form method="post">
+				<div class="row g-4">
+
+					<!-- Ana Bilgiler -->
+					<div class="col-12">
+						<div class="section-divider">
+							<span class="section-divider-label">Ana Bilgiler</span>
+							<div class="section-divider-line"></div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<label class="form-field-label">Başlık</label>
+						<input type="text"
+							   asp-for="Title"
+							   class="form-field-input"
+							   placeholder="Örn: Bizimle İletişime Geçin"
+							   required />
+					</div>
+
+					<div class="col-md-6">
+						<label class="form-field-label">Görsel URL</label>
+						<div class="input-icon-wrap">
+							<i class="mdi mdi-link-variant input-prefix-icon"></i>
+							<input type="text"
+								   asp-for="ImageUrl"
+								   id="imageUrlInput"
+								   class="form-field-input"
+								   placeholder="https://resim-adresi.com/gorsel.jpg"
+								   required />
+						</div>
+					</div>
+
+					<div class="col-12">
+						<div id="imagePreviewContainer" class="image-preview-box">
+							<img src="" id="imgPreview" alt="Önizleme" />
+							<div class="image-preview-label">Canlı önizleme</div>
+						</div>
+					</div>
+
+					<div class="col-12">
+						<label class="form-field-label">Açıklama</label>
+						<textarea asp-for="Description"
+								  class="form-field-textarea"
+								  placeholder="İletişim bölümü açıklaması..."></textarea>
+					</div>
+
+					<!-- Alt Başlıklar -->
+					<div class="col-12">
+						<div class="section-divider">
+							<span class="section-divider-label">Alt Bilgiler</span>
+							<div class="section-divider-line"></div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="sub-group">
+							<div class="sub-group-label">
+								<i class="mdi mdi-numeric-1-circle-outline"></i> Birinci Alt Bölüm
+							</div>
+							<div class="row g-3">
+								<div class="col-12">
+									<label class="form-field-label">Alt Başlık 1</label>
+									<input type="text"
+										   asp-for="SubTitle1"
+										   class="form-field-input"
+										   placeholder="Örn: Satışlarınızı artırın" />
+								</div>
+								<div class="col-12">
+									<label class="form-field-label">Alt Açıklama 1</label>
+									<textarea asp-for="SubDescription1"
+											  class="form-field-textarea"
+											  style="min-height:80px;"
+											  placeholder="Örn: Modern tasarım trendleri ile hazırlanmış özel şablonlar."></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="sub-group">
+							<div class="sub-group-label">
+								<i class="mdi mdi-numeric-2-circle-outline"></i> İkinci Alt Bölüm
+							</div>
+							<div class="row g-3">
+								<div class="col-12">
+									<label class="form-field-label">Alt Başlık 2</label>
+									<input type="text"
+										   asp-for="SubTitle2"
+										   class="form-field-input"
+										   placeholder="Örn: Yeni Özellikler Sunuyoruz" />
+								</div>
+								<div class="col-12">
+									<label class="form-field-label">Alt Açıklama 2</label>
+									<textarea asp-for="SubDescription2"
+											  class="form-field-textarea"
+											  style="min-height:80px;"
+											  placeholder="Örn: Verimliliği artıran dijital çözümler ve lojistik ağ yönetimi."></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<hr class="form-divider" />
+
+				<div class="form-actions">
+					<a href="/GetInTouch/GetInTouchList" class="btn-form-cancel">Vazgeç</a>
+					<button type="submit" class="btn-form-save">
+						<i class="mdi mdi-check-all"></i> İçeriği Kaydet
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		const urlInput = document.getElementById('imageUrlInput');
+		const previewContainer = document.getElementById('imagePreviewContainer');
+		const previewImg = document.getElementById('imgPreview');
+
+		urlInput.addEventListener('input', function () {
+			const url = this.value.trim();
+			if (url) {
+				previewImg.src = url;
+				previewContainer.style.display = 'block';
+			} else {
+				previewContainer.style.display = 'none';
+			}
+		});
+
+		previewImg.onerror = function () {
+			previewContainer.style.display = 'none';
+		};
+	</script>
+}
