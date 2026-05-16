@@ -1,0 +1,244 @@
+﻿@model GetTestimonialByIdDto
+@{
+    ViewData["Title"] = "Yorum Güncelle";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+    .update-testimonial-page {
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .form-card {
+        background: #ffffff;
+        border-radius: 14px;
+        border: 1px solid #e8e6e0;
+        overflow: hidden;
+        max-width: 860px;
+        margin: 0 auto;
+    }
+
+    .form-card-header {
+        padding: 20px 26px 18px;
+        border-bottom: 1px solid #f0ede6;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .form-header-icon {
+        width: 42px;
+        height: 42px;
+        background: #f4f3ef;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .form-header-icon i {
+            font-size: 20px;
+            color: #444441;
+        }
+
+    .form-header-text h5 {
+        font-size: 15px;
+        font-weight: 600;
+        color: #1a1a18;
+        margin-bottom: 3px;
+        margin-top: 0;
+    }
+
+    .form-header-text p {
+        font-size: 12.5px;
+        color: #888780;
+        margin: 0;
+    }
+
+    .form-card-body {
+        padding: 26px;
+    }
+
+    .form-field-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 500;
+        color: #444441;
+        margin-bottom: 7px;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+    }
+
+    .status-switch-wrap {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        background: #fcfbf7;
+        padding: 10px 15px;
+        border-radius: 9px;
+        border: 1px solid #e8e6e0;
+    }
+
+    .custom-switch {
+        position: relative;
+        display: inline-block;
+        width: 42px;
+        height: 22px;
+    }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider-round {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #d3d1c7;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+        .slider-round:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+    input:checked + .slider-round {
+        background-color: #1a1a18;
+    }
+
+        input:checked + .slider-round:before {
+            transform: translateX(20px);
+        }
+
+    .btn-form-cancel {
+        padding: 10px 22px;
+        border-radius: 9px;
+        border: 1px solid #d3d1c7;
+        background: transparent;
+        color: #444441;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        transition: background 0.15s ease;
+    }
+
+    .btn-form-save {
+        padding: 10px 26px;
+        border-radius: 9px;
+        border: none;
+        background: #1a1a18;
+        color: #f4f3ef;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        transition: all 0.15s ease;
+    }
+
+        .btn-form-save:hover {
+            background: #333330;
+            transform: translateY(-1px);
+        }
+</style>
+
+<div class="update-testimonial-page">
+    <div class="form-card">
+        <div class="form-card-header">
+            <div class="form-header-icon">
+                <i class="mdi mdi-pencil-box-outline"></i>
+            </div>
+            <div class="form-header-text">
+                <h5>Referansı Düzenle</h5>
+                <p>ID: @Model.TestimonialId</p>
+            </div>
+        </div>
+
+        <div class="form-card-body">
+            <form method="post">
+                <input type="hidden" asp-for="TestimonialId" />
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-field-label">Müşteri Adı</label>
+                        <input type="text" asp-for="NameSurname" class="form-control" style="border-radius:9px; padding: 10px 14px;" required />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-field-label">Ünvan / Meslek</label>
+                        <input type="text" asp-for="Title" class="form-control" style="border-radius:9px; padding: 10px 14px;" required />
+                    </div>
+
+                    <div class="col-12">
+                        <div style="display:flex; align-items:center; gap:15px; background:#f8f7f3; padding:15px; border-radius:10px; border:1px dashed #d3d1c7;">
+                            <img src="@Model.ImageUrl" style="width:60px; height:60px; border-radius:50%; object-fit:cover; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);" />
+                            <div style="flex:1;">
+                                <label class="form-field-label" style="font-size:11px; margin-bottom:4px;">Profil Fotoğrafı Linki</label>
+                                <input type="text" asp-for="ImageUrl" class="form-control form-control-sm" style="border-radius:6px;" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-field-label">Puanı Güncelle</label>
+                        <select asp-for="ReviewScore" class="form-select" style="border-radius:9px; padding: 10px 14px;">
+                            <option value="5">5 Yıldız</option>
+                            <option value="4">4 Yıldız</option>
+                            <option value="3">3 Yıldız</option>
+                            <option value="2">2 Yıldız</option>
+                            <option value="1">1 Yıldız</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-field-label">Görünürlük Durumu</label>
+                        <label class="status-switch-wrap">
+                            <span class="custom-switch">
+                                <input type="checkbox" asp-for="Status">
+                                <span class="slider-round"></span>
+                            </span>
+                            <span style="font-size: 13px; color: #1a1a18; font-weight: 500;">
+                                @(Model.Status ? "Yayında" : "Taslak (Gizli)")
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-field-label">Yorum Detayı</label>
+                        <textarea asp-for="ReviewDetail" class="form-control" rows="5" style="border-radius:9px; padding: 12px 14px; resize: vertical;"></textarea>
+                    </div>
+                </div>
+
+                <hr style="margin:24px 0; border: none; border-top: 1px solid #f0ede6;" />
+
+                <div class="form-actions">
+                    <a href="/Testimonial/Index" class="btn-form-cancel">Vazgeç</a>
+                    <button type="submit" class="btn-form-save">
+                        <i class="mdi mdi-refresh"></i> Değişiklikleri Uygula
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

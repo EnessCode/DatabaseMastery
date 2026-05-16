@@ -1,4 +1,9 @@
-﻿<section class="section mt-50 bg-customers-say">
+﻿@model List<ResultTestimonialDto>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.2.96/css/materialdesignicons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<section class="section mt-50 bg-customers-say">
     <div class="container">
         <h2 class="title-favicon color-white mb-20 title-padding-left">Müşterilerimiz Ne Diyor</h2>
         <p class="font-lg color-white pl-55">
@@ -6,85 +11,46 @@
             ve sağladığımız değeri yakından görün.
         </p>
     </div>
+
     <div class="box-slide-customers mt-50">
         <div class="box-swiper">
             <div class="swiper-container swiper-group-3-customers pb-50">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="card-testimonial-grid">
-                            <div class="box-author mb-25">
-                                <a href="#"><img src="/templates/assets/imgs/page/homepage1/author.png" alt="müşteri"></a>
-                                <div class="author-info">
-                                    <a href="#"><span class="font-xl-bold color-brand-2 author-name">Guy Hawkins</span></a>
-                                    <span class="font-sm color-grey-500 department">Bank of America</span>
+                    @foreach (var item in Model)
+                    {
+                        <div class="swiper-slide">
+                            <div class="card-testimonial-custom">
+                                <div class="author-header">
+                                    <img src="@item.ImageUrl" alt="@item.NameSurname" class="customer-avatar">
+                                    <div class="author-meta">
+                                        <h4 class="customer-name">@item.NameSurname</h4>
+                                        <p class="customer-title">@item.Title</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="testimonial-content">
-                                <p class="font-md color-grey-700">Lojistik süreçlerimizi daha verimli ve şeffaf hale getiren profesyonel bir hizmet aldık. Tüm operasyonlarımız sorunsuz ilerledi.</p>
-                            </div>
-                            <div class="card-bottom-info justify-content-between">
-                                <div class="rating text-start">
-                                    <img src="/templates/assets/imgs/template/icons/star.svg" alt="yıldız">
-                                    <img src="/templates/assets/imgs/template/icons/star.svg" alt="yıldız">
-                                    <img src="/templates/assets/imgs/template/icons/star.svg" alt="yıldız">
-                                    <img src="/templates/assets/imgs/template/icons/star.svg" alt="yıldız">
-                                    <img src="/templates/assets/imgs/template/icons/star.svg" alt="yıldız">
-                                    <br><span class="font-sm color-white">Müşteri Desteği</span>
+
+                                <div class="testimonial-body">
+                                    <p class="review-text">@item.ReviewDetail</p>
                                 </div>
-                                <span class="font-xs color-grey-500 rate-post text-end">Puan: 4.95 / 5</span>
+
+                                <div class="info-footer-dark">
+                                    <div class="footer-left">
+                                        <div class="star-container">
+                                            <div class="star-base">
+                                                <i class="mdi mdi-star"></i><i class="mdi mdi-star"></i><i class="mdi mdi-star"></i><i class="mdi mdi-star"></i><i class="mdi mdi-star"></i>
+                                            </div>
+                                            <div class="star-fill" style="width: @(item.ReviewScore * 20)%;">
+                                                <i class="mdi mdi-star"></i><i class="mdi mdi-star"></i><i class="mdi mdi-star"></i><i class="mdi mdi-star"></i><i class="mdi mdi-star"></i>
+                                            </div>
+                                        </div>
+                                        <span class="support-label">Müşteri Desteği</span>
+                                    </div>
+                                    <div class="footer-right">
+                                        <span class="score-text">Puan: @item.ReviewScore / 5</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card-testimonial-grid">
-                            <div class="box-author mb-25">
-                                <a href="#"><img src="/templates/assets/imgs/page/homepage1/author2.png" alt="müşteri"></a>
-                                <div class="author-info">
-                                    <a href="#"><span class="font-xl-bold color-brand-2 author-name">Eleanor Pena</span></a>
-                                    <span class="font-sm color-grey-500 department">Bank of America</span>
-                                </div>
-                            </div>
-                            <div class="testimonial-content">
-                                <p class="font-md color-grey-700">Zamanında teslimat ve güçlü iletişim sayesinde tüm sevkiyatlarımız güvenle gerçekleştirildi.</p>
-                            </div>
-                            <div class="card-bottom-info justify-content-between">
-                                <div class="rating text-start">
-                                    <img src="/templates/assets/imgs/template/icons/star.svg" alt="yıldız">
-                                    <img src="/templates/assets/imgs/template/icons/star.svg" alt="yıldız">
-                                    <img src="/templates/assets/imgs/template/icons/star.svg" alt="yıldız">
-                                    <img src="/templates/assets/imgs/template/icons/star.svg" alt="yıldız">
-                                    <img src="/templates/assets/imgs/template/icons/star.svg" alt="yıldız">
-                                    <br><span class="font-sm color-white">Müşteri Desteği</span>
-                                </div>
-                                <span class="font-xs color-grey-500 rate-post text-end">Puan: 4.95 / 5</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card-testimonial-grid">
-                            <div class="box-author mb-25">
-                                <a href="#"><img src="/templates/assets/imgs/page/homepage1/author3.png" alt="müşteri"></a>
-                                <div class="author-info">
-                                    <a href="#"><span class="font-xl-bold color-brand-2 author-name">Cody Fisher</span></a>
-                                    <span class="font-sm color-grey-500 department">Bank of America</span>
-                                </div>
-                            </div>
-                            <div class="testimonial-content">
-                                <p class="font-md color-grey-700">Profesyonel ekipleri ve hızlı çözümleri sayesinde lojistik operasyonlarımız büyük ölçüde kolaylaştı.</p>
-                            </div>
-                            <div class="card-bottom-info justify-content-between">
-                                <div class="rating text-start">
-                                    <img src="/templates/assets/imgs/template/icons/star.svg" alt="yıldız">
-                                    <img src="/templates/assets/imgs/template/icons/star.svg" alt="yıldız">
-                                    <img src="/templates/assets/imgs/template/icons/star.svg" alt="yıldız">
-                                    <img src="/templates/assets/imgs/template/icons/star.svg" alt="yıldız">
-                                    <img src="/templates/assets/imgs/template/icons/star.svg" alt="yıldız">
-                                    <br><span class="font-sm color-white">Müşteri Desteği</span>
-                                </div>
-                                <span class="font-xs color-grey-500 rate-post text-end">Puan: 4.95 / 5</span>
-                            </div>
-                        </div>
-                    </div>
+                    }
                 </div>
                 <div class="box-pagination-customers">
                     <div class="swiper-button-prev swiper-button-prev-customers swiper-button-prev-style-1">
@@ -100,27 +66,103 @@
 </section>
 
 <style>
+    .card-testimonial-custom {
+        background: #fff;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        border: 1px solid #e8e6e0;
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    /* Profil Kısmı */
+    .author-header {
+        padding: 25px 25px 15px 25px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .customer-avatar {
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .customer-name {
+        color: #b89650;
+        font-size: 19px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .customer-title {
+        color: #888;
+        font-size: 14px;
+        margin: 2px 0 0 0;
+    }
+
+    .testimonial-body {
+        padding: 0 25px 30px 25px;
+        flex-grow: 1;
+    }
+
+    .review-text {
+        font-size: 15.5px;
+        color: #555;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .info-footer-dark {
+        background: #00405b;
+        padding: 18px 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    .star-container {
+        position: relative;
+        display: inline-block;
+        font-size: 15px;
+        margin-bottom: 4px;
+    }
+
+    .star-base {
+        color: rgba(255, 255, 255, 0.15); 
+        letter-spacing: 2px;
+    }
+
+    .star-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: #ffb400; 
+        overflow: hidden;
+        white-space: nowrap;
+        letter-spacing: 2px;
+    }
+
+    .support-label {
+        color: #fff;
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .score-text {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 12px;
+        font-weight: 400;
+    }
+
     .bg-customers-say .swiper-slide {
         height: auto !important;
-        display: flex !important;
-    }
-
-    .bg-customers-say .card-testimonial-grid {
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
-        height: 100% !important;
-        justify-content: space-between !important;
-    }
-
-    .bg-customers-say .testimonial-content {
-        flex-grow: 1 !important;
-        display: flex !important;
-        align-items: flex-start !important;
-    }
-
-    .bg-customers-say .card-bottom-info {
-        margin-top: auto !important;
         display: flex !important;
     }
 </style>

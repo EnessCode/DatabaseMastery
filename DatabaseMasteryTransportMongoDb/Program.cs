@@ -4,6 +4,7 @@ using DatabaseMasteryTransportMongoDb.Services.GetInTouchServices;
 using DatabaseMasteryTransportMongoDb.Services.HowItWorkServices;
 using DatabaseMasteryTransportMongoDb.Services.OfferServices;
 using DatabaseMasteryTransportMongoDb.Services.SliderServices;
+using DatabaseMasteryTransportMongoDb.Services.TestimonialServices;
 using DatabaseMasteryTransportMongoDb.Settings;
 using Microsoft.Extensions.Options;
 using System.Reflection;
@@ -16,6 +17,7 @@ builder.Services.AddScoped<IOfferService, OfferService>();
 builder.Services.AddScoped<IAboutService, AboutService>();
 builder.Services.AddScoped<IGetInTouchService, GetInTouchService>();
 builder.Services.AddScoped<IHowItWorkService, HowItWorkService>();
+builder.Services.AddScoped<ITestimonialService, TestimonialService>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

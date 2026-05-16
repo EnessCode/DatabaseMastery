@@ -5,6 +5,7 @@ using DatabaseMasteryTransportMongoDb.Dtos.GetInTouchDtos;
 using DatabaseMasteryTransportMongoDb.Dtos.HowItWorkDtos;
 using DatabaseMasteryTransportMongoDb.Dtos.OfferDtos;
 using DatabaseMasteryTransportMongoDb.Dtos.SliderDtos;
+using DatabaseMasteryTransportMongoDb.Dtos.TestimonialDtos;
 using DatabaseMasteryTransportMongoDb.Entities;
 
 namespace DatabaseMasteryTransportMongoDb.Mapping
@@ -42,6 +43,11 @@ namespace DatabaseMasteryTransportMongoDb.Mapping
 			CreateMap<HowItWork, CreateHowItWorkDto>().ReverseMap();
 			CreateMap<HowItWork, UpdateHowItWorkDto>().ReverseMap();
 			CreateMap<HowItWork, GetHowItWorkByIdDto>().ReverseMap();
+
+			CreateMap<Testimonial, ResultTestimonialDto>().ReverseMap();
+			CreateMap<Testimonial, CreateTestimonialDto>().ReverseMap();
+			CreateMap<Testimonial, UpdateTestimonialDto>().ReverseMap();
+			CreateMap<Testimonial, GetTestimonialByIdDto>().ReverseMap();
 		}
 	}
 }
