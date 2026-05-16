@@ -1,0 +1,342 @@
+﻿@model GetQuestionByIdDto
+@{
+    ViewData["Title"] = "Soru Güncelle";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+    .update-faq-page {
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .form-card {
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #e8e6e0;
+        overflow: hidden;
+        max-width: 860px;
+        margin: 0 auto;
+    }
+
+    .form-card-header {
+        padding: 20px 26px 18px;
+        border-bottom: 1px solid #f0ede6;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .form-header-icon {
+        width: 42px;
+        height: 42px;
+        background: #f4f3ef;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .form-header-icon i {
+            font-size: 20px;
+            color: #444441;
+        }
+
+    .form-header-text h5 {
+        font-size: 15px;
+        font-weight: 600;
+        color: #1a1a18;
+        margin-bottom: 3px;
+    }
+
+    .form-header-text p {
+        font-size: 12.5px;
+        color: #888780;
+        margin: 0;
+    }
+
+    .form-card-body {
+        padding: 26px;
+    }
+
+    .form-field-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 500;
+        color: #444441;
+        margin-bottom: 7px;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+    }
+
+    .form-field-input {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 9px;
+        border: 1px solid #d3d1c7;
+        font-size: 13.5px;
+        color: #1a1a18;
+        background: #fff;
+        font-family: 'DM Sans', sans-serif;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        outline: none;
+    }
+
+        .form-field-input:focus {
+            border-color: #888780;
+            box-shadow: 0 0 0 3px rgba(136,135,128,0.08);
+        }
+
+        .form-field-input::placeholder {
+            color: #b4b2a9;
+        }
+
+    .form-field-textarea {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 9px;
+        border: 1px solid #d3d1c7;
+        font-size: 13.5px;
+        color: #1a1a18;
+        background: #fff;
+        font-family: 'DM Sans', sans-serif;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        outline: none;
+        resize: vertical;
+        min-height: 130px;
+        line-height: 1.7;
+    }
+
+        .form-field-textarea:focus {
+            border-color: #888780;
+            box-shadow: 0 0 0 3px rgba(136,135,128,0.08);
+        }
+
+        .form-field-textarea::placeholder {
+            color: #b4b2a9;
+        }
+
+    .toggle-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 11px 14px;
+        background: #f8f7f3;
+        border-radius: 9px;
+        border: 1px solid #e8e6e0;
+        height: 42px;
+    }
+
+        .toggle-row .form-check-input {
+            width: 36px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .toggle-row .form-check-label {
+            font-size: 13px;
+            color: #444441;
+            cursor: pointer;
+            margin: 0;
+        }
+
+    .preview-box {
+        background: #f8f7f3;
+        border-radius: 12px;
+        border: 1px solid #e8e6e0;
+        overflow: hidden;
+        margin-top: 4px;
+    }
+
+    .preview-box-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: #b4b2a9;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        padding: 10px 16px 6px;
+    }
+
+    .preview-faq-item {
+        padding: 14px 16px;
+        border-top: 1px solid #f0ede6;
+    }
+
+    .preview-q {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #1a1a18;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .preview-q-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #fdf8e8;
+        border: 1px solid #f0e6b0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        color: #b89a10;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+    .preview-a {
+        font-size: 12.5px;
+        color: #888780;
+        line-height: 1.6;
+        padding-left: 28px;
+    }
+
+    .form-divider {
+        border: none;
+        border-top: 1px solid #f0ede6;
+        margin: 24px 0;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .btn-form-cancel {
+        padding: 10px 22px;
+        border-radius: 9px;
+        border: 1px solid #d3d1c7;
+        background: transparent;
+        color: #444441;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        transition: background 0.15s ease;
+    }
+
+        .btn-form-cancel:hover {
+            background: #f4f3ef;
+            color: #1a1a18;
+        }
+
+    .btn-form-save {
+        padding: 10px 26px;
+        border-radius: 9px;
+        border: none;
+        background: #1a1a18;
+        color: #f4f3ef;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: 'DM Sans', sans-serif;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+        .btn-form-save:hover {
+            background: #333330;
+            transform: translateY(-1px);
+        }
+</style>
+
+<div class="update-faq-page">
+    <div class="form-card">
+        <div class="form-card-header">
+            <div class="form-header-icon">
+                <i class="mdi mdi-comment-edit-outline"></i>
+            </div>
+            <div class="form-header-text">
+                <h5>Soruyu Güncelle</h5>
+                <p>Seçili soru-cevap içeriğini buradan düzenleyebilirsiniz.</p>
+            </div>
+        </div>
+
+        <div class="form-card-body">
+            <form method="post">
+                <input type="hidden" asp-for="QuestionId" />
+
+                <div class="row g-4">
+
+                    <div class="col-md-8">
+                        <label class="form-field-label">Soru</label>
+                        <input type="text"
+                               asp-for="Title"
+                               id="titleInput"
+                               class="form-field-input"
+                               placeholder="Soruyu giriniz..."
+                               required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-field-label">Görünürlük</label>
+                        <div class="toggle-row">
+                            <input class="form-check-input" type="checkbox" asp-for="Status" id="statusSwitch" />
+                            <label class="form-check-label" for="statusSwitch">Aktif olarak yayınla</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-field-label">Cevap</label>
+                        <textarea asp-for="Description"
+                                  id="descInput"
+                                  class="form-field-textarea"
+                                  placeholder="Cevabı giriniz..."></textarea>
+                    </div>
+
+                    <!-- Canlı önizleme -->
+                    <div class="col-12">
+                        <div class="preview-box">
+                            <div class="preview-box-label">Canlı Önizleme</div>
+                            <div class="preview-faq-item">
+                                <div class="preview-q">
+                                    <span class="preview-q-icon">S</span>
+                                    <span id="previewTitle">@Model.Title</span>
+                                </div>
+                                <div class="preview-a" id="previewDesc">@Model.Description</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr class="form-divider" />
+
+                <div class="form-actions">
+                    <a href="/Question/QuestionList" class="btn-form-cancel">Vazgeç</a>
+                    <button type="submit" class="btn-form-save">
+                        <i class="mdi mdi-check-all"></i> Değişiklikleri Uygula
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const titleInput = document.getElementById('titleInput');
+        const descInput = document.getElementById('descInput');
+        const previewTitle = document.getElementById('previewTitle');
+        const previewDesc = document.getElementById('previewDesc');
+
+        titleInput.addEventListener('input', function () {
+            previewTitle.textContent = this.value.trim() || 'Sorunuzu girin...';
+        });
+
+        descInput.addEventListener('input', function () {
+            previewDesc.textContent = this.value.trim() || 'Cevabınız burada görünecek.';
+        });
+    </script>
+}
