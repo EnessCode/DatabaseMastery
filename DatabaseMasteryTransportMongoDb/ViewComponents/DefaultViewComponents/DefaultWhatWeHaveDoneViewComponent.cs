@@ -1,12 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DatabaseMasteryTransportMongoDb.Services.ProjectSectionServices;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DatabaseMasteryTransportMongoDb.ViewComponents.DefaultViewComponents
 {
 	public class DefaultWhatWeHaveDoneViewComponent : ViewComponent
 	{
-		public IViewComponentResult Invoke()
+		private readonly IProjectSectionService _projectSectionService;
+
+		public DefaultWhatWeHaveDoneViewComponent(IProjectSectionService ProjectSectionService)
 		{
-			return View();
+			_projectSectionService = ProjectSectionService;
+		}
+
+		public async Task<IViewComponentResult> InvokeAsync()
+		{
+			var values = await _projectSectionService.GetAllProjectSectionAsync();
+			return View(values);
 		}
 	}
 }
