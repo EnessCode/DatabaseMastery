@@ -6,6 +6,8 @@ using DatabaseMasteryTransportMongoDb.Dtos.HowItWorkDtos;
 using DatabaseMasteryTransportMongoDb.Dtos.OfferDtos;
 using DatabaseMasteryTransportMongoDb.Dtos.ProjectSectionDtos;
 using DatabaseMasteryTransportMongoDb.Dtos.QuestionDtos;
+using DatabaseMasteryTransportMongoDb.Dtos.ShipmentDtos;
+using DatabaseMasteryTransportMongoDb.Dtos.ShipmentTrackingDtos;
 using DatabaseMasteryTransportMongoDb.Dtos.SliderDtos;
 using DatabaseMasteryTransportMongoDb.Dtos.TestimonialDtos;
 using DatabaseMasteryTransportMongoDb.Entities;
@@ -60,6 +62,15 @@ namespace DatabaseMasteryTransportMongoDb.Mapping
 			CreateMap<Question, CreateQuestionDto>().ReverseMap();
 			CreateMap<Question, UpdateQuestionDto>().ReverseMap();
 			CreateMap<Question, GetQuestionByIdDto>().ReverseMap();
+
+			CreateMap<Shipment, ResultShipmentDto>().ReverseMap();
+			CreateMap<Shipment, CreateShipmentDto>().ReverseMap();
+			CreateMap<Shipment, UpdateShipmentDto>().ReverseMap();
+			CreateMap<Shipment, GetShipmentByIdDto>().ReverseMap();
+
+			CreateMap<ShipmentTracking, ResultShipmentTrackingDto>().ReverseMap();
+			CreateMap<ShipmentTracking, CreateShipmentTrackingDto>().ReverseMap();
+			CreateMap<ShipmentTracking, UpdateShipmentTrackingDto>().ReverseMap();
 		}
 	}
 }

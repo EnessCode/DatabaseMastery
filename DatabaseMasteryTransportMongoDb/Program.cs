@@ -5,6 +5,8 @@ using DatabaseMasteryTransportMongoDb.Services.HowItWorkServices;
 using DatabaseMasteryTransportMongoDb.Services.OfferServices;
 using DatabaseMasteryTransportMongoDb.Services.ProjectSectionServices;
 using DatabaseMasteryTransportMongoDb.Services.QuestionServices;
+using DatabaseMasteryTransportMongoDb.Services.ShipmentServices;
+using DatabaseMasteryTransportMongoDb.Services.ShipmentTrackingServices;
 using DatabaseMasteryTransportMongoDb.Services.SliderServices;
 using DatabaseMasteryTransportMongoDb.Services.TestimonialServices;
 using DatabaseMasteryTransportMongoDb.Settings;
@@ -22,6 +24,8 @@ builder.Services.AddScoped<IHowItWorkService, HowItWorkService>();
 builder.Services.AddScoped<ITestimonialService, TestimonialService>();
 builder.Services.AddScoped<IProjectSectionService, ProjectSectionService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<IShipmentService, ShipmentService>();
+builder.Services.AddScoped<IShipmentTrackingService, ShipmentTrackingService>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

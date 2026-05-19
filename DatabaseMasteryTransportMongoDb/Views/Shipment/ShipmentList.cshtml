@@ -1,0 +1,592 @@
+﻿@model List<ResultShipmentDto>
+@{
+    ViewData["Title"] = "Kargo Yönetimi";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+    .shipment-page {
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+    }
+
+    .page-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: #1a1a18;
+        margin-bottom: 4px;
+    }
+
+    .page-subtitle {
+        font-size: 13px;
+        color: #888780;
+        margin: 0;
+    }
+
+    .btn-add {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #1a1a18;
+        color: #f4f3ef;
+        border: none;
+        border-radius: 100px;
+        padding: 10px 20px;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background 0.18s ease, transform 0.18s ease;
+        white-space: nowrap;
+    }
+
+        .btn-add:hover {
+            background: #333330;
+            color: #f4f3ef;
+            transform: translateY(-1px);
+        }
+
+    .filter-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1.25rem;
+        flex-wrap: wrap;
+    }
+
+    .filter-search-wrap {
+        position: relative;
+        flex: 1;
+        min-width: 200px;
+    }
+
+        .filter-search-wrap i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #b4b2a9;
+            pointer-events: none;
+        }
+
+    .filter-input {
+        width: 100%;
+        height: 38px;
+        padding: 0 12px 0 36px;
+        border-radius: 9px;
+        border: 1px solid #d3d1c7;
+        font-size: 13px;
+        color: #1a1a18;
+        background: #fff;
+        font-family: 'DM Sans', sans-serif;
+        outline: none;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+        .filter-input:focus {
+            border-color: #888780;
+            box-shadow: 0 0 0 3px rgba(136,135,128,0.08);
+        }
+
+        .filter-input::placeholder {
+            color: #b4b2a9;
+        }
+
+    .filter-select {
+        height: 38px;
+        padding: 0 32px 0 12px;
+        border-radius: 9px;
+        border: 1px solid #d3d1c7;
+        font-size: 13px;
+        color: #444441;
+        background: #fff;
+        font-family: 'DM Sans', sans-serif;
+        outline: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888780' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        cursor: pointer;
+        transition: border-color 0.15s ease;
+        white-space: nowrap;
+    }
+
+        .filter-select:focus {
+            border-color: #888780;
+            outline: none;
+        }
+
+    /* Tablo */
+    .shipment-table-wrap {
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #e8e6e0;
+        overflow: hidden;
+    }
+
+    .shipment-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+        .shipment-table thead tr {
+            background: #f8f7f3;
+            border-bottom: 1px solid #f0ede6;
+        }
+
+        .shipment-table thead th {
+            padding: 11px 16px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: #888780;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        .shipment-table tbody tr {
+            border-bottom: 1px solid #f0ede6;
+            transition: background 0.12s ease;
+        }
+
+            .shipment-table tbody tr:last-child {
+                border-bottom: none;
+            }
+
+            .shipment-table tbody tr:hover {
+                background: #faf9f6;
+            }
+
+        .shipment-table td {
+            padding: 13px 16px;
+            vertical-align: middle;
+            color: #1a1a18;
+        }
+
+    .tracking-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-family: 'DM Mono', monospace, 'DM Sans', sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        background: #f4f3ef;
+        color: #444441;
+        padding: 4px 10px;
+        border-radius: 7px;
+        border: 1px solid #e8e6e0;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+    }
+
+    .person-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+    }
+
+    .person-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a18;
+    }
+
+    .person-sub {
+        font-size: 11.5px;
+        color: #888780;
+    }
+
+    .route-cell {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12.5px;
+        color: #444441;
+        white-space: nowrap;
+    }
+
+        .route-cell i {
+            font-size: 13px;
+            color: #b4b2a9;
+            flex-shrink: 0;
+        }
+
+    .route-origin {
+        font-weight: 500;
+    }
+
+    .route-dest {
+        font-weight: 600;
+        color: #1a1a18;
+    }
+
+    .date-cell {
+        font-size: 12px;
+        color: #888780;
+        white-space: nowrap;
+    }
+
+    /* Durum pilleri */
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        font-weight: 500;
+        padding: 4px 10px;
+        border-radius: 100px;
+        white-space: nowrap;
+    }
+
+    .status-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: currentColor;
+        flex-shrink: 0;
+    }
+
+    .status-created {
+        background: #f0f0f0;
+        color: #555552;
+    }
+
+    .status-at-branch {
+        background: #e6f1fb;
+        color: #185FA5;
+    }
+
+    .status-in-transfer {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .status-out-delivery {
+        background: #ede9fe;
+        color: #5b21b6;
+    }
+
+    .status-delivered {
+        background: #eaf3de;
+        color: #3b6d11;
+    }
+
+    .status-default {
+        background: #f4f3ef;
+        color: #888780;
+    }
+
+    /* Aksiyonlar */
+    .action-group {
+        display: flex;
+        gap: 6px;
+    }
+
+    .btn-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        border: 1px solid;
+        background: transparent;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.15s ease;
+    }
+
+    .btn-icon-edit {
+        border-color: #d3d1c7;
+        color: #444441;
+    }
+
+        .btn-icon-edit:hover {
+            background: #f4f3ef;
+            color: #1a1a18;
+        }
+
+    .btn-icon-del {
+        border-color: #f7c1c1;
+        color: #a32d2d;
+    }
+
+        .btn-icon-del:hover {
+            background: #fcebeb;
+            color: #791f1f;
+        }
+
+    .empty-state {
+        padding: 4rem 2rem;
+        text-align: center;
+    }
+
+    .empty-icon-wrap {
+        width: 64px;
+        height: 64px;
+        background: #f4f3ef;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        font-size: 24px;
+        color: #b4b2a9;
+    }
+
+    .empty-state h5 {
+        font-size: 15px;
+        font-weight: 600;
+        color: #1a1a18;
+        margin-bottom: 5px;
+    }
+
+    .empty-state p {
+        font-size: 13px;
+        color: #888780;
+        margin: 0;
+    }
+
+    .list-footer {
+        margin-top: 1rem;
+        text-align: right;
+        font-size: 12px;
+        color: #888780;
+    }
+
+        .list-footer strong {
+            color: #444441;
+            font-weight: 600;
+        }
+
+    @@media (max-width: 768px) {
+        .shipment-table thead
+
+    {
+        display: none;
+    }
+
+    .shipment-table tbody tr {
+        display: block;
+        padding: 12px 16px;
+    }
+
+    .shipment-table td {
+        display: block;
+        padding: 4px 0;
+        border: none;
+    }
+
+        .shipment-table td::before {
+            content: attr(data-label);
+            font-size: 10px;
+            font-weight: 600;
+            color: #888780;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+    }
+
+    /* === EK CSS: Hareketleri Listeleme Buton Stili === */
+    .btn-icon-tracking {
+        border-color: #cce5ff;
+        color: #004085;
+    }
+
+        .btn-icon-tracking:hover {
+            background: #e1f0ff;
+            color: #002752;
+        }
+</style>
+
+<div class="shipment-page">
+    <div class="page-header">
+        <div>
+            <h3 class="page-title">Kargo Yönetimi</h3>
+            <p class="page-subtitle">Sisteme kayıtlı tüm gönderi kayıtlarını görüntüleyin ve yönetin.</p>
+        </div>
+        <a href="/Shipment/CreateShipment" class="btn-add">
+            <i class="mdi mdi-plus-circle"></i> Yeni Kargo Ekle
+        </a>
+    </div>
+
+    <div class="filter-bar">
+        <div class="filter-search-wrap">
+            <i class="mdi mdi-magnify"></i>
+            <input type="text"
+                   class="filter-input"
+                   id="searchInput"
+                   placeholder="Takip no, gönderici veya alıcı ara..." />
+        </div>
+        <select class="filter-select" id="statusFilter">
+            <option value="">Tüm Durumlar</option>
+            <option value="Sipariş Oluşturuldu">Sipariş Oluşturuldu</option>
+            <option value="Şubede">Şubede</option>
+            <option value="Transfer Merkezinde">Transfer Merkezinde</option>
+            <option value="Dağıtımda">Dağıtımda</option>
+            <option value="Teslim Edildi">Teslim Edildi</option>
+        </select>
+    </div>
+
+    <div class="shipment-table-wrap">
+        @if (Model != null && Model.Any())
+        {
+            <table class="shipment-table" id="shipmentTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Takip No</th>
+                        <th>Gönderici / Alıcı</th>
+                        <th>Güzergah</th>
+                        <th>Oluşturma Tarihi</th>
+                        <th>Durum</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int num = 1;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr data-search="@item.TrackingNumber @item.SenderName @item.ReceiverName"
+                            data-status="@item.CurrentStatus">
+                            <td data-label="#">
+                                <span style="font-size:12px;color:#b4b2a9;font-weight:600;">@num</span>
+                            </td>
+                            <td data-label="Takip No">
+                                <span class="tracking-badge">
+                                    <i class="mdi mdi-barcode-scan" style="font-size:13px;"></i>
+                                    @item.TrackingNumber
+                                </span>
+                            </td>
+                            <td data-label="Gönderici / Alıcı">
+                                <div class="person-cell">
+                                    <span class="person-name">@item.SenderName</span>
+                                    <span class="person-sub"><i class="mdi mdi-arrow-right" style="font-size:10px;"></i> @item.ReceiverName</span>
+                                </div>
+                            </td>
+                            <td data-label="Güzergah">
+                                <div class="route-cell">
+                                    <span class="route-origin">@item.OriginCity</span>
+                                    <i class="mdi mdi-arrow-right"></i>
+                                    <span class="route-dest">@item.DestinationCity</span>
+                                </div>
+                            </td>
+                            <td data-label="Tarih">
+                                <span class="date-cell">@item.CreatedDate.ToString("dd MMM yyyy")</span>
+                            </td>
+                            <td data-label="Durum">
+                                @{
+                                    var statusClass = item.CurrentStatus switch
+                                    {
+                                        "Sipariş Oluşturuldu" => "status-created",
+                                        "Şubede" => "status-at-branch",
+                                        "Transfer Merkezinde" => "status-in-transfer",
+                                        "Dağıtımda" => "status-out-delivery",
+                                        "Teslim Edildi" => "status-delivered",
+                                        _ => "status-default"
+                                    };
+                                }
+                                <span class="status-pill @statusClass">
+                                    <span class="status-dot"></span>
+                                    @item.CurrentStatus
+                                </span>
+                            </td>
+                            <td data-label="İşlemler">
+                                <div class="action-group">
+                                    <a href="/ShipmentTracking/Index?trackingNumber=@item.TrackingNumber"
+                                       class="btn-icon btn-icon-tracking" title="Kargo Hareketleri">
+                                        <i class="mdi mdi-map-marker-path"></i>
+                                    </a>
+                                    <a href="/Shipment/UpdateShipment/@item.ShipmentId"
+                                       class="btn-icon btn-icon-edit" title="Düzenle">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </a>
+                                    <button type="button"
+                                            onclick="deleteShipment('@item.ShipmentId')"
+                                            class="btn-icon btn-icon-del" title="Sil">
+                                        <i class="mdi mdi-delete-outline"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        num++;
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="empty-state">
+                <div class="empty-icon-wrap">
+                    <i class="mdi mdi-package-variant-closed"></i>
+                </div>
+                <h5>Henüz Kargo Kaydı Yok</h5>
+                <p>Yeni kargo ekleyerek yönetim panelini oluşturmaya başlayabilirsiniz.</p>
+            </div>
+        }
+    </div>
+
+    <div class="list-footer">
+        Toplam Kayıt: <strong>@Model.Count</strong>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const searchInput   = document.getElementById('searchInput');
+        const statusFilter  = document.getElementById('statusFilter');
+        const rows          = document.querySelectorAll('#shipmentTable tbody tr');
+
+        function applyFilter() {
+            const q      = searchInput.value.toLowerCase();
+            const status = statusFilter.value.toLowerCase();
+
+            rows.forEach(row => {
+                const searchText = (row.dataset.search || '').toLowerCase();
+                const rowStatus  = (row.dataset.status  || '').toLowerCase();
+
+                const matchSearch = !q      || searchText.includes(q);
+                const matchStatus = !status || rowStatus === status.toLowerCase();
+
+                row.style.display = matchSearch && matchStatus ? '' : 'none';
+            });
+        }
+
+        searchInput.addEventListener('input',  applyFilter);
+        statusFilter.addEventListener('change', applyFilter);
+
+        function deleteShipment(id) {
+            Swal.fire({
+                title: 'Kargo Kaydını Sil?',
+                text: 'Bu işlem geri alınamaz.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#a32d2d',
+                cancelButtonColor:  '#888780',
+                confirmButtonText:  'Evet, Sil',
+                cancelButtonText:   'Vazgeç'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/Shipment/DeleteShipment/' + id;
+                }
+            });
+        }
+    </script>
+}

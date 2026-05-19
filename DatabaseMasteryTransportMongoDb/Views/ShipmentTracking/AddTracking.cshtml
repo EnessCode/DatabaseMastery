@@ -1,0 +1,389 @@
+﻿@model DatabaseMasteryTransportMongoDb.Dtos.ShipmentTrackingDtos.CreateShipmentTrackingDto
+@{
+    ViewData["Title"] = "Yeni Kargo Hareketi Ekle";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+
+    string trackingNo = ViewBag.TrackingNumber;
+    string senderName = ViewBag.SenderName;
+    string receiverName = ViewBag.ReceiverName;
+    string originCity = ViewBag.OriginCity;
+    string destCity = ViewBag.DestinationCity;
+    string currentStatus = ViewBag.CurrentStatus;
+    var existingTrackings = ViewBag.ExistingTrackings as List<DatabaseMasteryTransportMongoDb.Entities.ShipmentTracking>;
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+    .add-tracking-page {
+        font-family: 'DM Sans', sans-serif;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .summary-card {
+        background: #f8f7f3;
+        border-radius: 14px;
+        border: 1px solid #e8e6e0;
+        padding: 20px 24px;
+        margin-bottom: 1.5rem;
+    }
+
+    .summary-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f0ede6;
+        padding-bottom: 12px;
+        margin-bottom: 14px;
+    }
+
+    .summary-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: #1a1a18;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .summary-badge {
+        font-family: 'Courier New', monospace;
+        background: #fff;
+        border: 1px solid #d3d1c7;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+    }
+
+    .summary-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .summary-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #b4b2a9;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .summary-value {
+        font-size: 13.5px;
+        color: #444441;
+        font-weight: 500;
+    }
+
+    /* Form Kartı */
+    .form-card {
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #e8e6e0;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-card-header {
+        padding: 20px 26px 18px;
+        border-bottom: 1px solid #f0ede6;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+        .form-card-header h5 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a18;
+            margin: 0;
+        }
+
+    .form-card-body {
+        padding: 26px;
+    }
+
+    .form-field-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 500;
+        color: #444441;
+        margin-bottom: 7px;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+    }
+
+    .form-field-input,
+    .form-field-select,
+    .form-field-textarea {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 9px;
+        border: 1px solid #d3d1c7;
+        font-size: 13.5px;
+        color: #1a1a18;
+        background: #fff;
+        font-family: 'DM Sans', sans-serif;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        outline: none;
+    }
+
+        .form-field-input:focus,
+        .form-field-select:focus,
+        .form-field-textarea:focus {
+            border-color: #888780;
+            box-shadow: 0 0 0 3px rgba(136,135,128,0.08);
+        }
+
+    .form-field-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888780' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 13px center;
+        padding-right: 36px;
+        cursor: pointer;
+    }
+
+    .form-field-textarea {
+        resize: vertical;
+        min-height: 80px;
+        line-height: 1.5;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        border-top: 1px solid #f0ede6;
+        padding-top: 20px;
+        margin-top: 20px;
+    }
+
+    .btn-form-cancel {
+        padding: 10px 22px;
+        border-radius: 9px;
+        border: 1px solid #d3d1c7;
+        background: transparent;
+        color: #444441;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        transition: background 0.15s ease;
+    }
+
+        .btn-form-cancel:hover {
+            background: #f4f3ef;
+            color: #1a1a18;
+        }
+
+    .btn-form-save {
+        padding: 10px 26px;
+        border-radius: 9px;
+        border: none;
+        background: #1a1a18;
+        color: #f4f3ef;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        transition: background 0.15s ease;
+    }
+
+        .btn-form-save:hover {
+            background: #333330;
+        }
+
+    .history-section-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #b4b2a9;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .history-section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #f0ede6;
+        }
+
+    .mini-timeline {
+        padding-left: 20px;
+        border-left: 2px solid #f0ede6;
+        margin-left: 8px;
+    }
+
+    .mini-timeline-item {
+        position: relative;
+        margin-bottom: 16px;
+    }
+
+        .mini-timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+    .mini-timeline-dot {
+        position: absolute;
+        left: -27px;
+        top: 4px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #d3d1c7;
+        border: 2px solid #fff;
+    }
+
+    .mini-timeline-item:first-child .mini-timeline-dot {
+        background: #185FA5;
+    }
+
+    .mini-timeline-meta {
+        font-size: 11px;
+        color: #888780;
+    }
+
+    .mini-timeline-status {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a18;
+    }
+
+    .mini-timeline-text {
+        font-size: 12px;
+        color: #666560;
+        margin: 2px 0 0 0;
+    }
+</style>
+
+<div class="add-tracking-page">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 style="font-size: 22px; font-weight: 600; color: #1a1a18; margin-bottom: 4px;">Yeni Hareket Ekle</h3>
+            <p style="font-size: 13px; color: #888780; margin: 0;">Kargo lojistik sürecine yeni bir durum veya konum kaydı işleyin.</p>
+        </div>
+        <a href="/ShipmentTracking/Index?trackingNumber=@trackingNo" class="btn-form-cancel" style="border-radius: 100px; padding: 8px 18px;">
+            <i class="mdi mdi-arrow-left"></i> Hareketlere Dön
+        </a>
+    </div>
+
+    <div class="summary-card">
+        <div class="summary-header">
+            <div class="summary-title">
+                <i class="mdi mdi-package-variant-closed" style="font-size: 18px;"></i>
+                <span>GÜNCEL GÖNDERİ BİLGİLERİ</span>
+            </div>
+            <div class="summary-badge">@trackingNo</div>
+        </div>
+        <div class="summary-grid">
+            <div class="summary-item">
+                <span class="summary-label">Mevcut Durum</span>
+                <span class="summary-value" style="color: #185FA5; font-weight: 600;">@currentStatus</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Gönderici / Alıcı</span>
+                <span class="summary-value">@senderName → @receiverName</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Güzergah</span>
+                <span class="summary-value">@originCity → @destCity</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <div class="form-card-header">
+            <i class="mdi mdi-map-marker-plus" style="font-size: 20px; color: #444441;"></i>
+            <h5>Hareket Detayları</h5>
+        </div>
+        <div class="form-card-body">
+            <form action="/ShipmentTracking/AddTracking" method="post">
+
+                <input type="hidden" asp-for="TrackingNumber" value="@trackingNo" />
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-field-label">İşlem Tarihi / Saati</label>
+                        <input type="datetime-local"
+                               asp-for="EventDate"
+                               class="form-field-input"
+                               required />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-field-label">Yeni Kargo Durumu</label>
+                        <select asp-for="TrackingStatus" class="form-field-select" required>
+                            <option value="">Durum Seçin</option>
+                            <option value="Sipariş Oluşturuldu">Sipariş Oluşturuldu</option>
+                            <option value="Şubede">Şubede</option>
+                            <option value="Transfer Merkezinde">Transfer Merkezinde</option>
+                            <option value="Dağıtımda">Dağıtımda</option>
+                            <option value="Teslim Edildi">Teslim Edildi</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-field-label">Bulunduğu Konum / Şube</label>
+                        <input type="text"
+                               asp-for="Location"
+                               class="form-field-input"
+                               placeholder="Örn: Kadıköy Aktarma Merkezi, Çankaya Şubesi vb."
+                               required />
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-field-label">Açıklama</label>
+                        <textarea asp-for="Description"
+                                  class="form-field-textarea"
+                                  placeholder="Gönderiyle ilgili detaylı işlem açıklaması giriniz... (Örn: Gönderi transfer merkezine ulaştı, hat aracına yüklendi.)"
+                                  required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="/ShipmentTracking/Index?trackingNumber=@trackingNo" class="btn-form-cancel">Vazgeç</a>
+                    <button type="submit" class="btn-form-save">
+                        <i class="mdi mdi-check"></i> Hareketi Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (existingTrackings != null && existingTrackings.Any())
+    {
+        <div class="history-section-title">Mevcut Durum Geçmişi</div>
+        <div class="summary-card" style="background: #fff;">
+            <div class="mini-timeline">
+                @foreach (var track in existingTrackings)
+                {
+                    <div class="mini-timeline-item">
+                        <div class="mini-timeline-dot"></div>
+                        <div class="mini-timeline-meta">
+                            <strong>@track.EventDate.ToString("dd MMM yyyy, HH:mm")</strong> — <span style="color:#a32d2d;">@track.Location</span>
+                        </div>
+                        <div class="mini-timeline-status">@track.TrackingStatus</div>
+                        <p class="mini-timeline-text">@track.Description</p>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
