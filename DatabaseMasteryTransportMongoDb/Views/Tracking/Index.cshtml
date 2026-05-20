@@ -833,7 +833,7 @@
                                    class="search-input"
                                    id="trackingInput"
                                    placeholder="Takip numaranızı girin (örn: TRK123456789)"
-                                   value="@(ViewBag.SearchedNumber ?? "TRK123456789")" />
+                                   value="@ViewBag.SearchedNumber" />
                         </div>
                         <button type="submit" class="btn-search">
                             <i class="bi bi-search"></i>
@@ -841,12 +841,6 @@
                         </button>
                     </div>
                 </form>
-
-                <div class="quick-track">
-                    <span class="quick-track-label">Hızlı Erişim:</span>
-                    <span class="quick-track-number" onclick="quickTrack('TRK123456789')">TRK123456789</span>
-                    <span class="quick-track-number" onclick="quickTrack('TRK987654321')">TRK987654321</span>
-                </div>
             </div>
 
             @if (ViewBag.SearchedNumber != null)
